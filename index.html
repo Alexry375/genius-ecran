@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le fil · Genius N7</title>
+<style>
+  :root { --nuit: #04061a; }
+  html, body {
+    margin: 0; height: 100%; overflow: hidden;
+    background: #000; cursor: none;
+    -webkit-user-select: none; user-select: none;
+    /* sur téléphone : pas de zoom au double toucher (deux touchers rapides = deux moments),
+       pas de « tirer pour recharger », pas de reflet gris au toucher */
+    touch-action: manipulation; overscroll-behavior: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  #scene {
+    position: absolute; left: 50%; top: 50%;
+    width: min(100vw, calc(100vh * 16 / 9));
+    height: min(100vh, calc(100vw * 9 / 16));
+    /* sur téléphone, la hauteur vraiment visible (barre d'adresse déduite), si le navigateur la connaît */
+    width: min(100vw, calc(100dvh * 16 / 9));
+    height: min(100dvh, calc(100vw * 9 / 16));
+    transform: translate(-50%, -50%);
+    display: block; background: var(--nuit);
+  }
+</style>
+</head>
+<body>
+<canvas id="scene" width="1920" height="1080"></canvas>
+<script src="reglages.js"></script>
+<script src="js/donnees.js"></script>
+<script src="js/police.js"></script>
+<script src="js/fil.js"></script>
+</body>
+</html>
