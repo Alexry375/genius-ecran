@@ -1521,6 +1521,7 @@
     let doigt = null;
     window.addEventListener('pointerdown', e => {
       if (e.pointerType !== 'touch') return;
+      if (e.target && e.target.closest && e.target.closest('[data-aide]')) { doigt = null; return; }   // toucher l'aide ne change pas de moment
       doigt = e.isPrimary ? { id: e.pointerId, x: e.clientX, y: e.clientY } : null;   // un deuxième doigt annule
     });
     window.addEventListener('pointercancel', () => { doigt = null; });

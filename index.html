@@ -25,13 +25,76 @@
     transform: translate(-50%, -50%);
     display: block; background: var(--nuit);
   }
+  /* Aide : un petit « ? » en bas à droite, et la liste des commandes (touche H, ou toucher le « ? »).
+     Sur ordinateur, le « ? » s'efface après quelques secondes pour ne pas rester sur le projecteur. */
+  #aide-bouton {
+    position: fixed; right: max(14px, env(safe-area-inset-right, 0px)); bottom: max(14px, env(safe-area-inset-bottom, 0px));
+    width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(226, 180, 90, .55);
+    background: rgba(4, 6, 26, .72); color: #f3dfb0; font: 600 20px/1 "B612 Fil", "Segoe UI", system-ui, sans-serif;
+    cursor: pointer; opacity: .85; transition: opacity .8s; z-index: 2; padding: 0;
+  }
+  #aide-bouton.efface { opacity: 0; pointer-events: none; }
+  #aide-bouton:focus-visible { outline: 2px solid #e2b45a; outline-offset: 3px; }
+  #aide {
+    position: fixed; right: max(14px, env(safe-area-inset-right, 0px)); bottom: max(64px, calc(env(safe-area-inset-bottom, 0px) + 64px));
+    max-width: min(420px, calc(100vw - 28px)); max-height: calc(100dvh - 90px); overflow: auto; box-sizing: border-box;
+    padding: 16px 18px; border-radius: 10px; border: 1px solid rgba(226, 180, 90, .45);
+    background: rgba(4, 6, 26, .92); color: #efe6d2; cursor: auto; z-index: 2;
+    font: 15px/1.45 "B612 Fil", "Segoe UI", system-ui, sans-serif;
+  }
+  #aide h2 { margin: 0 0 8px; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: #e2b45a; font-weight: 600; }
+  #aide dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; }
+  #aide dt { color: #e2b45a; white-space: nowrap; }
+  #aide dd { margin: 0; }
+  #aide p { margin: 10px 0 0; color: #b9ae96; font-size: 13px; }
 </style>
 </head>
 <body>
 <canvas id="scene" width="1920" height="1080"></canvas>
+<button id="aide-bouton" type="button" data-aide aria-controls="aide" aria-expanded="false" title="Commandes (touche H)">?</button>
+<div id="aide" data-aide role="dialog" aria-label="Commandes de l'écran" hidden>
+  <h2>Commandes</h2>
+  <dl>
+    <dt>→ ou Espace</dt><dd>moment suivant</dd>
+    <dt>←</dt><dd>moment précédent</dd>
+    <dt>1 à 5</dt><dd>aller à un moment : 1 attente, 2 Tristan Vincent, 3 Thibaut Lucas, 4 troisième guest, 5 apéro</dd>
+    <dt>F</dt><dd>plein écran (F ou Échap pour sortir)</dd>
+    <dt>Téléphone</dt><dd>toucher à droite pour avancer, à gauche pour revenir</dd>
+    <dt>H</dt><dd>afficher ou masquer cette aide</dd>
+  </dl>
+  <p>L'attente tourne toute seule, en boucle d'une minute. Chaque appui lance ensuite tout le moment suivant, qui se déroule seul.</p>
+</div>
 <script src="reglages.js"></script>
 <script src="js/donnees.js"></script>
 <script src="js/police.js"></script>
 <script src="js/fil.js"></script>
+<script>
+(function () {
+  // Aide : touche H (ou ?) pour afficher ou masquer ; le « ? » reste visible sur téléphone,
+  // et s'efface après 8 secondes sur ordinateur. index.html?aide=0 la retire complètement.
+  var q = new URLSearchParams(location.search);
+  var bouton = document.getElementById('aide-bouton'), aide = document.getElementById('aide');
+  if (q.get('aide') === '0' || q.has('t')) { bouton.hidden = true; return; }
+  var tactile = window.matchMedia && matchMedia('(pointer: coarse)').matches;
+  var minuterie = null;
+  function montreBouton() {
+    bouton.classList.remove('efface');
+    clearTimeout(minuterie);
+    if (!tactile && aide.hidden) minuterie = setTimeout(function () { bouton.classList.add('efface'); }, 8000);
+  }
+  function bascule(ouvrir) {
+    aide.hidden = !ouvrir;
+    bouton.setAttribute('aria-expanded', String(ouvrir));
+    montreBouton();
+  }
+  bouton.addEventListener('click', function (e) { e.stopPropagation(); bascule(aide.hidden); bouton.blur(); });
+  window.addEventListener('keydown', function (e) {
+    if (e.repeat || e.ctrlKey || e.metaKey || e.altKey) return;
+    if (e.key === 'h' || e.key === 'H' || e.key === '?') bascule(aide.hidden);
+    else if (e.key === 'Escape' && !aide.hidden) bascule(false);
+  });
+  montreBouton();
+})();
+</script>
 </body>
 </html>
