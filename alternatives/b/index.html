@@ -220,6 +220,7 @@ body.s-lumiere #carre{animation:allumage 2.2s linear .5s both}
 .acte .sur .marque{width:30px;height:30px}
 .acte .nom{font-size:168px;font-weight:900;line-height:.86;letter-spacing:-.045em;text-transform:uppercase;white-space:nowrap}
 .acte .nom .sceau{width:880px;height:290px;display:block}
+.acte .nom.voile{visibility:hidden} /* caché tant que le carré n'est pas arrivé dessus */
 .acte .ligne{margin-top:52px;font-size:44px;font-weight:500;color:var(--gris);white-space:nowrap}
 .acte .entree{margin-top:52px;font-size:44px;font-style:italic;font-weight:300;color:var(--or)}
 .progres{position:absolute;right:120px;top:60px;display:flex;gap:16px}
@@ -591,8 +592,10 @@ function acteur(sec){
     if(scelle){ // le sceau reste : le carré devient la marque
       return carreA({x:bm.x,y:bm.y,w:30,h:30,mode:''});
     }
-    // 1) le carré devient le sceau qui couvre le nom
+    // 1) le carré devient le sceau qui couvre le nom ; le nom reste caché pendant son trajet (1,25 s)
+    nom.classList.add('voile');
     carreA({x:b.x-16,y:b.y-34,w:b.w+32,h:b.h+46,mode:''}); // marge haute : couvre aussi les accents (É)
+    plan(1300, ()=> nom.classList.remove('voile'));
     // 2) il se retire vers la droite : le nom apparaît
     plan(2000, ()=> carreA({x:b.x+b.w+16, w:0}, 900));
     // 3) il réapparaît, minuscule, en marque devant « ACTE »
