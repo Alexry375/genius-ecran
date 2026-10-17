@@ -12,9 +12,9 @@ window.REGLAGES = {
 
   // Troisième guest : laisser "" tant qu'il n'est pas confirmé.
   // Le jour où il l'est, écrire son nom ici, par exemple "Prénom Nom".
-  troisiemeGuest: "",
+  troisiemeGuest: "Sébastien Bonnet",
 
   // Facultatif : une ligne de présentation sous son nom (sinon laisser "").
-  troisiemeGuestPresentation: "",
+  troisiemeGuestPresentation: "Entrepreneur : MonOrdo, Urry, Dropp.",
 
 };
