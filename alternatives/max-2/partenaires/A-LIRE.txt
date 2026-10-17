@@ -1,2 +1,0 @@
-Déposer ici les logos des partenaires (PNG à fond transparent de préférence),
-puis les déclarer dans la liste « partenaires » en haut de index.html. Voir LISEZMOI.md.
