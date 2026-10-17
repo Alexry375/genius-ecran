@@ -16,9 +16,9 @@ window.SOIREE = {
   // ligne : une ligne de présentation sous le nom (null = rien).
   // fond : l'image plein écran que Tristan prépare pour l'intervention (déposer le fichier dans fonds/).
   guests: [
-    { nom: "Tristan Vincent", ligne: "Créateur de contenu · plus de 600 000 abonnés", fond: "fonds/acte-1.jpg" },
-    { nom: "Thibaut Lucas", ligne: "Ingénieur ENSEEIHT · cofondateur et CEO de Picsellia", fond: "fonds/acte-2.jpg" },
-    { nom: "Sébastien Bonnet", ligne: "Entrepreneur · MonOrdo, Urry, Dropp", fond: "fonds/acte-3.jpg" }
+    { nom: "Tristan Vincent",  ligne: "Créateur de contenu · plus de 600 000 abonnés",       fond: "fonds/acte-1.jpg" },
+    { nom: "Thibaut Lucas",    ligne: "Ingénieur ENSEEIHT · cofondateur et CEO de Picsellia", fond: "fonds/acte-2.jpg" },
+    { nom: "Sébastien Bonnet", ligne: "Entrepreneur · MonOrdo, Urry, Dropp",                  fond: "fonds/acte-3.jpg" }
   ],
 
   // Garder les guests 2 et 3 cachés sur l'écran d'attente même une fois leurs noms saisis
@@ -43,7 +43,14 @@ window.SOIREE = {
 
   // --- Partenaires ---------------------------------------------------------
   // null = emplacement marqué « logo partenaire ». Remplacer par { nom: "…", logo: "logos/fichier.png" }.
-  partenaires: [null, null, null, null],
+  // Logos officiels posés sur carte crème (sources : ressources/visuels/collecte/SOURCES.md).
+  // N7 Développement : soutien À CONFIRMER (mettre null pour le retirer).
+  partenaires: [
+    { nom: "AIn7",                     logo: "logos/ain7.png" },
+    { nom: "Toulouse INP-ENSEEIHT",  logo: "logos/toulouse-inp-n7.png" },
+    { nom: "N7 Développement",         logo: "logos/n7-developpement.png" },
+    { nom: "La Mêlée",                 logo: "logos/la-melee.png" }
+  ],
 
   // --- Fixe ----------------------------------------------------------------
   titre: "Soirée Entrepreneuriat",
@@ -56,12 +63,13 @@ window.SOIREE = {
   inscription: { url: "https://luma.com/msnjs8ts", affichee: "luma.com/msnjs8ts" },
 
   // Générique de fin (écran « Merci »). Les guests sont ajoutés automatiquement en tête.
+  // logo (facultatif) : petite image sous les noms de la ligne.
   generique: [
     { role: "Une soirée", noms: ["Genius N7"] },
     { role: "Avec", noms: ["AIn7", "l'association des anciens élèves"] },
     { role: "Accueillie par", noms: ["l'ENSEEIHT", "Amphi B00"] },
-    { role: "Image", noms: ["TVN7"] },
-    { role: "Lumière", noms: ["CAN7"] }
+    { role: "Image", noms: ["TVN7"], logo: "logos/tvn7.png" },
+    { role: "Lumière", noms: ["CAN7"], logo: "logos/can7.png" }
   ]
 };
 </script>
@@ -263,6 +271,7 @@ body{font-family:'Inter',Arial,sans-serif;color:var(--creme);-webkit-font-smooth
 #defile .r .noms{font-size:58px;font-weight:780;letter-spacing:-.025em;line-height:1.18}
 #defile .r .noms .sec{font-weight:450;font-size:40px;color:rgba(20,20,20,.62);letter-spacing:-.01em}
 #defile .r .noms .anon{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--or-sombre)}
+#defile .r .noms .credit-logo{display:block;height:100px;width:auto;margin-top:18px}
 #defile .part{display:flex;flex-direction:column;align-items:center;margin:40px 0 120px}
 #defile .part .logos{justify-content:center}
 #defile .part .logo-slot.vide{border-color:rgba(20,20,20,.3);color:rgba(20,20,20,.5)}
@@ -554,7 +563,7 @@ $('#rang-cloture').innerHTML = G.map((g,i)=>`<div class="case" style="--d:${i}">
   let h = `<div class="ouv"><div class="m">Merci</div><div class="slug">${esc(D.titre)} · ${esc(D.dateCourte)}</div></div>`;
   h += `<div class="r"><div class="role">Sur scène</div><div class="noms">${G.map((g,i)=> g.nom ? esc(g.nom) : `<span class="anon">l'invité de l'acte ${ROM[i+1]}</span>`).join('<br>')}</div></div>`;
   D.generique.forEach(r=>{
-    h += `<div class="r"><div class="role">${esc(r.role)}</div><div class="noms">${r.noms.map((n,j)=> j===0 ? esc(n) : `<span class="sec">${esc(n)}</span>`).join('<br>')}</div></div>`;
+    h += `<div class="r"><div class="role">${esc(r.role)}</div><div class="noms">${r.noms.map((n,j)=> j===0 ? esc(n) : `<span class="sec">${esc(n)}</span>`).join('<br>')}${r.logo ? `<img class="credit-logo" src="${esc(r.logo)}" alt="" onerror="this.remove()">` : ''}</div></div>`;
   });
   h += `<div class="part"><div class="slug" style="color:var(--or-sombre)">Partenaires</div><div class="logos">${logosHTML()}</div></div>`;
   h += `<div class="vous"><div class="role">Et surtout</div><div class="v">vous, dans la salle.</div></div>`;

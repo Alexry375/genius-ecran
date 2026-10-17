@@ -1,9 +1,14 @@
 Déposer ici les images plein écran des trois interventions, avec ces noms exacts :
 
   acte-1.jpg   Tristan Vincent
-  acte-2.jpg   guest 2
-  acte-3.jpg   guest 3
+  acte-2.jpg   Thibaut Lucas
+  acte-3.jpg   Sébastien Bonnet
 
 Formats acceptés : .jpg, .jpeg, .png, .webp (même nom, autre extension).
 Taille idéale : 1920 x 1080 (une autre proportion est recadrée au centre).
 Tant qu'un fichier manque, l'écran affiche un fond sobre ; la régie (touche H) le signale.
+
+PROPOSITION (17/10/2026) : les trois fichiers présents sont des fonds sobres
+fabriqués à partir de la charte (noir, or, G en filigrane, nom et ligne du guest,
+logo Picsellia pour l'acte II). Aucune photo. À valider ; pour les changer,
+remplacer le fichier par l'image de Tristan ou du guest, sous le même nom.

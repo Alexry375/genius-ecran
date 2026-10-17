@@ -1,3 +1,8 @@
 Déposer ici les fonds plein écran des guests (1920×1080) :
   acte-1.jpg  acte-2.jpg  acte-3.jpg
 Autre nom ou format : modifier "fond" dans SOIREE, en tête de index.html.
+
+PROPOSITION (17/10/2026) : les trois fichiers présents sont des fonds sobres
+fabriqués à partir de la charte (noir, or, G en filigrane, nom et ligne du guest,
+logo Picsellia pour l'acte II). Aucune photo. À valider ; il suffit de les
+remplacer par les images de Tristan ou des guests, sous le même nom.

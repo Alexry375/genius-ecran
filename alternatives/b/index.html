@@ -36,9 +36,9 @@ window.SOIREE = {
      fond         = image plein écran pendant l'intervention, à déposer dans le dossier fonds/
                     (extension libre : .jpg, .jpeg, .png ou .webp). */
   guests: [
-    { nom: "Tristan Vincent", ligne: "Créateur de contenu · plus de 600 000 abonnés", fond: "fonds/acte-1" },
-    { nom: "Thibaut Lucas", ligne: "Ingénieur ENSEEIHT · cofondateur et CEO de Picsellia", fond: "fonds/acte-2" },
-    { nom: "Sébastien Bonnet", ligne: "Entrepreneur · MonOrdo, Urry, Dropp", fond: "fonds/acte-3" }
+    { nom: "Tristan Vincent",  ligne: "Créateur de contenu · plus de 600 000 abonnés",       fond: "fonds/acte-1" },
+    { nom: "Thibaut Lucas",    ligne: "Ingénieur ENSEEIHT · cofondateur et CEO de Picsellia", fond: "fonds/acte-2" },
+    { nom: "Sébastien Bonnet", ligne: "Entrepreneur · MonOrdo, Urry, Dropp",                  fond: "fonds/acte-3" }
   ],
 
   /* false : sur l'écran d'attente, les actes II et III restent scellés même si leur nom est rempli
@@ -54,22 +54,24 @@ window.SOIREE = {
   },
   aperoSousTitre: "Buffet · rencontres",
 
-  /* Générique de fin : [rôle, nom]. */
+  /* Générique de fin : [rôle, nom] ou [rôle, nom, logo] (logo facultatif, affiché sous le nom). */
   equipe: [
     ["Une soirée", "Genius N7"],
     ["Avec",       "AIn7"],
-    ["Image",      "TVN7"],
-    ["Lumière",    "CAN7"],
+    ["Image",      "TVN7", "assets/credit-tvn7.png"],
+    ["Lumière",    "CAN7", "assets/credit-can7.png"],
     ["Lieu",       "ENSEEIHT · Amphi B00"]
   ],
 
   /* Partenaires : un emplacement par ligne. logo = chemin d'une image déposée dans le dossier
-     (ex. "partenaires/logo-1.png"). Tant que logo est vide, l'emplacement reste marqué. */
+     (ex. "partenaires/logo-1.png"). Tant que logo est vide, l'emplacement reste marqué.
+     Logos officiels sur carte crème (sources : ressources/visuels/collecte/SOURCES.md).
+     N7 Développement : soutien À CONFIRMER (supprimer la ligne pour le retirer). */
   partenaires: [
-    { nom: "", logo: "" },
-    { nom: "", logo: "" },
-    { nom: "", logo: "" },
-    { nom: "", logo: "" }
+    { nom: "AIn7",                    logo: "partenaires/ain7.png" },
+    { nom: "Toulouse INP-ENSEEIHT", logo: "partenaires/toulouse-inp-n7.png" },
+    { nom: "N7 Développement",        logo: "partenaires/n7-developpement.png" },
+    { nom: "La Mêlée",                logo: "partenaires/la-melee.png" }
   ],
 
   /* Lien de l'écran d'attente (le QR code est l'image assets/qr-luma.svg). */
@@ -260,6 +262,7 @@ body.s-lumiere #carre{animation:allumage 2.2s linear .5s both}
 .cr .role{text-align:right;font-size:26px;font-weight:700;letter-spacing:.38em;color:var(--or);text-transform:uppercase}
 .cr .qui{font-size:58px;font-weight:800;letter-spacing:-.025em;line-height:1.05}
 .cr .qui .sceau{width:300px;height:44px}
+.cr .qui .cr-logo{display:block;height:110px;width:auto;margin:14px 0 10px}
 .cr-centre{text-align:center}
 .cr-gap{height:120px}
 .cr-titre{font-size:150px;font-weight:900;letter-spacing:-.05em;line-height:.85;text-align:center}
@@ -497,7 +500,7 @@ function generique(){
            <div class="cr-gap"></div>`;
   D.guests.slice(0,3).forEach((g,k)=>{ h += cr('Acte '+ROMAIN[k], aNom(g)?esc(g.nom):'<span class="sceau"></span>'); });
   h += `<div class="cr-gap"></div>`;
-  D.equipe.forEach(([r,q])=> h += cr(r, esc(q)));
+  D.equipe.forEach(([r,q,l])=> h += cr(r, esc(q) + (l ? `<img class="cr-logo" src="${esc(l)}" alt="" onerror="this.remove()">` : '')));
   h += `<div class="cr-gap"></div><div class="cr-centre"><div class="sur" style="padding-left:.42em;margin-bottom:48px">Avec le soutien de</div></div><div class="logos">`;
   D.partenaires.forEach((p,j)=>{
     h += p.logo ? `<div class="logo-slot plein"><img src="${esc(p.logo)}" alt="${esc(p.nom||'')}"></div>`
@@ -531,7 +534,9 @@ function justifier(el, largeur){
 function scaleCourant(){ return stage.getBoundingClientRect().width/1920 || 1; }
 function ajuster(el, max){
   let fs = parseFloat(getComputedStyle(el).fontSize);
-  while(el.scrollWidth > max && fs > 20){ fs -= 2; el.style.fontSize = fs+'px'; }
+  // largeur du texte lui-même (et non celle du bloc, élargi par une ligne voisine plus longue)
+  const larg = ()=>{ const rg = document.createRange(); rg.selectNodeContents(el); return Math.max(rg.getBoundingClientRect().width / scaleCourant(), 0); };
+  while(larg() > max && fs > 20){ fs -= 2; el.style.fontSize = fs+'px'; }
 }
 function mise_en_page(){
   // lockups « SOIRÉE / ENTREPRENEURIAT »

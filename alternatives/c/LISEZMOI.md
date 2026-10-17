@@ -33,13 +33,13 @@ Pour répéter à partir d'un écran précis, ajouter `#numéro.temps` à l'adre
 
 ## Modifier les données
 Tout se trouve dans l'objet `SOIREE`, **en tête de `index.html`** (lignes 10 à 66). On l'ouvre avec n'importe quel éditeur de texte, on modifie, on enregistre et on recharge la page.
-- `guests` : les guests 2 et 3 sont à `nom: null` pour l'instant. Écrire leur nom et leur rôle, par exemple `nom: "Prénom Nom", role: "…"`.
+- `guests` : nom et `role` (ligne de présentation) des trois guests ; `nom: null` remet un acte sous scellé.
   - `surprise: true` : le nom reste sous scellé sur l'écran d'attente et dans le programme, puis se révèle au 2e appui de son entrée en scène.
   - `surprise: false` : le nom est affiché partout dès l'attente.
 - `apero` : `"mele"` (La Mêlée) ou `"foyer"` (Foyer des étudiants, ENSEEIHT). C'est tout ce qu'il faut changer pour basculer.
 - `horaires` : ce sont les valeurs du briefing guest (p. 8). **Attention, les sources ne concordent pas** : la plaquette indique 18:15 / 18:30 / 19:00 / 19:30 / 20:15, et la page Luma affiche 19h–22h. Il faut les aligner sur le déroulé final de Tristan.
-- `partenaires` : un emplacement par entrée. Mettre le fichier dans `partenaires/` et écrire `logo: "partenaires/fichier.png"`. Sans logo, l'emplacement reste marqué en pointillés.
-- `equipes` : le générique technique (TVN7, CAN7).
+- `partenaires` : quatre logos détourés en place dans `partenaires/` (AIn7, Toulouse INP-ENSEEIHT, N7 Développement à confirmer, La Mêlée). Une entrée avec `logo: ""` redevient un emplacement en pointillés.
+- `equipes` : le générique technique (TVN7, CAN7) ; `logo` (facultatif) affiche le logo du club à gauche du nom (`img/credit-*.png`).
 
 ## Fonds des guests
 Déposer les images plein écran (idéalement 1920×1080, au format JPG ou PNG) dans **`fonds/`** :
@@ -47,8 +47,13 @@ Déposer les images plein écran (idéalement 1920×1080, au format JPG ou PNG) 
 Tant que le fichier manque, un fond noir sobre marqué « Acte I/II/III » le remplace, et la régie (touche R) signale l'image absente.
 
 ## Captures (`captures/`)
-01–03 attente (3 plans) · 04–05 ouverture · 06 programme · 07 acte I · 08 fond guest 1 (emplacement vide) · 09 merci I · 10 acte II (nom non renseigné : scellé) · 11 fond 2 · 12 merci II · 13 acte III · 14 fond 3 · 15 merci III · 16–17 clôture · 18 remerciements · 19 apéro (La Mêlée).
-20–22 sont des **démonstrations** avec un nom fictif « Prénom Nom » (sans rapport avec un guest réel) : 20 = scellé avant la révélation, 21 = nom révélé, 22 = apéro au Foyer des étudiants.
+01–03 attente (3 plans) · 04–05 ouverture · 06 programme · 07 acte I · 08 fond 1 (proposition) · 09 merci I · 10 acte II · 11 fond 2 · 12 merci II · 13 acte III · 14 fond 3 · 15 merci III · 16–17 clôture · 18 remerciements (logos TVn7 / CAn7 et partenaires) · 19 apéro (La Mêlée) · 20 apéro au Foyer des étudiants.
+
+## Mise à jour du 17/10/2026 (guests annoncés)
+- Les trois guests sont renseignés, sans secret : Tristan Vincent (« Créateur de contenu · plus de 600 000 abonnés »), Thibaut Lucas (« Ingénieur ENSEEIHT · cofondateur et CEO de Picsellia »), Sébastien Bonnet (« Entrepreneur · MonOrdo, Urry, Dropp »).
+- Logos officiels ajoutés : AIn7, Toulouse INP-ENSEEIHT, N7 Développement (**soutien à confirmer**), La Mêlée ; au générique, les logos TVn7 et CAn7 (les clubs écrivent « TVn7 » et « CAn7 »). Sources et droits : `ressources/visuels/collecte/SOURCES.md`.
+- Les fonds des guests présents dans `fonds/` sont une **proposition** (fonds sobres en charte, sans photo) : à valider, ou à remplacer par les images de Tristan sous le même nom.
+
 
 ## Contenu du dossier
 `index.html` (tout le code), `fonts/` (Inter, licence OFL incluse), `img/` (code QR vers https://luma.com/msnjs8ts, grain), `fonds/`, `partenaires/`, `captures/`.

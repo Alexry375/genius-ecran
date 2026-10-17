@@ -38,9 +38,9 @@ window.SOIREE = {
   //   fond     : image plein écran pendant l'intervention (fichier à déposer dans fonds/ ;
   //              .jpg, .jpeg, .png ou .webp acceptés). Tant qu'il manque : fond sobre.
   guests: [
-    { nom: "Tristan Vincent", ligne: "Créateur de contenu · plus de 600 000 abonnés", surprise: false, fond: "fonds/acte-1.jpg" },
-    { nom: "Thibaut Lucas", ligne: "Ingénieur ENSEEIHT · cofondateur et CEO de Picsellia", surprise: false, fond: "fonds/acte-2.jpg" },
-    { nom: "Sébastien Bonnet", ligne: "Entrepreneur · MonOrdo, Urry, Dropp", surprise: false, fond: "fonds/acte-3.jpg" },
+    { nom: "Tristan Vincent",  ligne: "Créateur de contenu · plus de 600 000 abonnés",       surprise: false, fond: "fonds/acte-1.jpg" },
+    { nom: "Thibaut Lucas",    ligne: "Ingénieur ENSEEIHT · cofondateur et CEO de Picsellia", surprise: false, fond: "fonds/acte-2.jpg" },
+    { nom: "Sébastien Bonnet", ligne: "Entrepreneur · MonOrdo, Urry, Dropp",                  surprise: false, fond: "fonds/acte-3.jpg" },
   ],
 
   // ── APÉRO / NETWORKING ─────────────────────────────────────────────────────
@@ -57,16 +57,23 @@ window.SOIREE = {
   // ── PARTENAIRES ─ invisibles à l'écran tant que la liste est vide ──────────
   //   { nom: "Nom du partenaire", logo: "partenaires/logo.png", carte: false }
   //   carte: true pour un logo sur fond blanc (JPG) : il est posé sur une carte crème.
+  //   Logos officiels (sources : ressources/visuels/collecte/SOURCES.md).
+  //   N7 Développement : soutien À CONFIRMER (supprimer la ligne pour le retirer).
   partenaires: [
+    { nom: "AIn7",                    logo: "partenaires/ain7.jpg",             carte: true  },
+    { nom: "Toulouse INP-ENSEEIHT", logo: "partenaires/toulouse-inp-n7.png",  carte: false },
+    { nom: "N7 Développement",        logo: "partenaires/n7-developpement.png", carte: false },
+    { nom: "La Mêlée",                logo: "partenaires/la-melee.svg",         carte: false },
   ],
 
   // ── GÉNÉRIQUE DE FIN ─ les trois guests s'ajoutent automatiquement en tête ─
   //   Les logos des partenaires (s'il y en a) s'insèrent avant la dernière ligne.
+  //   Troisième valeur facultative : un logo affiché sous le nom (ex. "partenaires/credit-tvn7.png").
   generique: [
     ["Une soirée",    "Genius N7"],
     ["Avec",          "AIn7"],
-    ["Vidéo",         "TVN7"],
-    ["Lumière",       "CAN7"],
+    ["Vidéo",         "TVN7", "partenaires/credit-tvn7.png"],
+    ["Lumière",       "CAN7", "partenaires/credit-can7.png"],
     ["Lieu",          "Amphi B00 · ENSEEIHT · Toulouse"],
     ["Et surtout",    "Vous."],
   ],
@@ -158,6 +165,7 @@ body.cache-souris,body.cache-souris *{cursor:none!important}
 .cr{padding:0 112px 88px}
 .cr .role{display:block;font-weight:700;font-size:30px;letter-spacing:.3em;text-indent:.3em;color:var(--or);white-space:nowrap}
 .cr .qui{display:inline-block;margin-top:14px;font-weight:800;font-size:76px;line-height:1.05;letter-spacing:-.01em;color:var(--creme);white-space:nowrap}
+.cr .credit{display:block;height:120px;width:auto;margin:22px auto 0}
 .cr .logos{display:flex;gap:56px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:30px}
 .partlogo{max-height:110px;max-width:300px;object-fit:contain}
 .partlogo.silhouette{filter:brightness(0) invert(.94) sepia(.15)}
@@ -889,7 +897,7 @@ function construireGenerique() {
   // les logos des partenaires s'insèrent juste avant la dernière ligne du générique
   gen.forEach((l, k) => { if (k === gen.length - 1 && parts.length) lignes.push(['Partenaires', null]); lignes.push(l); });
   if (!gen.length && parts.length) lignes.push(['Partenaires', null]);
-  lignes.forEach(([role, qui]) => {
+  lignes.forEach(([role, qui, credit]) => {
     const c = el('div', 'cr', def, `<span class="role">${esc(caps(role))}</span>`);
     if (qui === null) {
       const lg = el('div', 'logos', c);
@@ -901,6 +909,7 @@ function construireGenerique() {
     } else if (String(qui).trim()) {
       const q = el('span', 'qui', c, esc(qui));
       const w = q.offsetWidth; if (w > W - 2 * M) q.style.fontSize = Math.floor(76 * (W - 2 * M) / w) + 'px';
+      if (credit) { const ci = new Image(); ci.onload = () => E.mesure && E.mesure(); ci.onerror = () => ci.remove(); ci.src = credit; ci.alt = ''; ci.className = 'credit'; c.appendChild(ci); }
     }
   });
   // la fin : l'ampoule, allumée, et MERCI
