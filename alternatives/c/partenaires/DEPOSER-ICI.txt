@@ -1,0 +1,2 @@
+Déposer ici les logos des partenaires (PNG ou SVG, fond transparent),
+puis renseigner SOIREE.partenaires en tête de index.html.

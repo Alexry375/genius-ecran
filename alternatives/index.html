@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Écrans Genius N7</title>
+<style>
+  :root {
+    --fond: #0b0c14; --carte: #151722; --trait: #2a2c3a; --texte: #ece6d8; --doux: #a59f90; --or: #e2b45a;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--fond); color: var(--texte);
+    font: 16px/1.5 "Segoe UI", system-ui, -apple-system, sans-serif;
+    padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 28px 48px;
+  }
+  main { max-width: 1120px; margin: 0 auto; display: grid; gap: 28px; }
+  header { display: grid; gap: 8px; max-width: 68ch; }
+  h1 { margin: 0; font-size: clamp(1.6rem, 4vw, 2.3rem); line-height: 1.15; text-wrap: balance; }
+  header p { margin: 0; color: var(--doux); }
+  .grille { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+  a.carte {
+    display: grid; grid-template-rows: auto 1fr; background: var(--carte); border: 1px solid var(--trait);
+    border-radius: 10px; overflow: hidden; color: inherit; text-decoration: none; min-width: 0;
+  }
+  a.carte:hover, a.carte:focus-visible { border-color: var(--or); outline: none; }
+  a.carte img { display: block; width: 100%; max-width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: #000; }
+  .txt { padding: 14px 16px 16px; display: grid; gap: 6px; align-content: start; }
+  .nom { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+  h2 { margin: 0; font-size: 1.15rem; }
+  .etiquette { font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--or); }
+  .txt p { margin: 0; color: var(--doux); font-size: .95rem; }
+  footer { color: var(--doux); font-size: .9rem; max-width: 68ch; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Écrans de la soirée entrepreneuriat</h1>
+    <p>Genius N7 avec AIn7, jeudi 26 novembre 2026, amphi B00, ENSEEIHT. Toutes les propositions d'écran pour le grand écran derrière la scène. Ouvre une version, clique dedans, puis flèche droite pour avancer, flèche gauche pour revenir, F pour le plein écran. Sur téléphone : toucher à droite pour avancer.</p>
+  </header>
+
+  <div class="grille">
+    <a class="carte" href="../">
+      <img src="vignettes/fil.jpg" alt="Le fil : « Soirée entrepreneuriat » écrit en cursive lumineuse" loading="lazy">
+      <div class="txt"><div class="nom"><h2>Le fil</h2><span class="etiquette">version proposée</span></div>
+        <p>Un fil incandescent trace l'ampoule Genius, puis écrit à la main le titre et le nom de chaque guest. Finit en or vers l'apéro.</p></div>
+    </a>
+    <a class="carte" href="classique/">
+      <img src="vignettes/classique.jpg" alt="Version classique : diapositive d'attente" loading="lazy">
+      <div class="txt"><div class="nom"><h2>Classique</h2><span class="etiquette">diaporama</span></div>
+        <p>Un diaporama sobre de 16 diapositives, modifiable dans PowerPoint ou Google Slides : attente avec code d'inscription, programme, un titre par acte, partenaires, apéro.</p></div>
+    </a>
+    <a class="carte" href="a/">
+      <img src="vignettes/a.jpg" alt="Le carré : écran d'attente" loading="lazy">
+      <div class="txt"><div class="nom"><h2>Le carré</h2></div>
+        <p>Le carré doré « N7 » de la charte traverse la soirée : il porte le code d'inscription, devient l'ampoule, puis le numéro de chaque acte.</p></div>
+    </a>
+    <a class="carte" href="b/">
+      <img src="vignettes/b.jpg" alt="Le sceau : écran d'attente" loading="lazy">
+      <div class="txt"><div class="nom"><h2>Le sceau</h2></div>
+        <p>Grandes lettres noir, crème et or, grain de pellicule. Le carré doré se pose en sceau sur chaque nom puis se retire pour le révéler.</p></div>
+    </a>
+    <a class="carte" href="c/">
+      <img src="vignettes/c.jpg" alt="Les trois barres : écran d'attente" loading="lazy">
+      <div class="txt"><div class="nom"><h2>Les trois barres</h2></div>
+        <p>Les actes I, II, III dessinés en barres de lumière dorée, comme des projecteurs. À la fin, l'or inonde l'écran.</p></div>
+    </a>
+    <a class="carte" href="max-1/">
+      <img src="vignettes/max-1.jpg" alt="Sous tension : écran d'attente" loading="lazy">
+      <div class="txt"><div class="nom"><h2>Sous tension</h2></div>
+        <p>La soirée comme une mise sous tension : un trait de lumière court d'écran en écran, chaque acte allume son tube.</p></div>
+    </a>
+    <a class="carte" href="max-2/">
+      <img src="vignettes/max-2.jpg" alt="La façade : écran d'attente" loading="lazy">
+      <div class="txt"><div class="nom"><h2>La façade</h2></div>
+        <p>Une façade de brique toulousaine la nuit. Chaque acte est une fenêtre dorée qui s'allume ; à la fin, tout l'immeuble s'éclaire.</p></div>
+    </a>
+    <a class="carte" href="max-4/">
+      <img src="vignettes/max-4.jpg" alt="La servante : écran d'attente" loading="lazy">
+      <div class="txt"><div class="nom"><h2>La servante</h2></div>
+        <p>Un théâtre vide éclairé par une seule lampe, l'ampoule Genius. Les textes passent comme des indications de mise en scène.</p></div>
+    </a>
+  </div>
+
+  <footer>Les versions autres que « Le fil » sont des propositions : elles n'ont pas reçu les dernières corrections (la version classique montre encore « À confirmer » pour les guests 2 et 3).</footer>
+</main>
+</body>
+</html>

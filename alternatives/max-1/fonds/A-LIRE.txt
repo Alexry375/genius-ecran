@@ -1,0 +1,9 @@
+Déposer ici les images plein écran des trois interventions, avec ces noms exacts :
+
+  acte-1.jpg   Tristan Vincent
+  acte-2.jpg   guest 2
+  acte-3.jpg   guest 3
+
+Formats acceptés : .jpg, .jpeg, .png, .webp (même nom, autre extension).
+Taille idéale : 1920 x 1080 (une autre proportion est recadrée au centre).
+Tant qu'un fichier manque, l'écran affiche un fond sobre ; la régie (touche H) le signale.

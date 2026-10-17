@@ -1,0 +1,1134 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<!--
+  ÉCRAN DE LA SOIRÉE ENTREPRENEURIAT — Genius N7 · AIn7 · jeudi 26 novembre 2026 · amphi B00, ENSEEIHT
+  Ouvrir dans Chrome, touche F pour le plein écran.
+  → ou Espace : avancer      ← : reculer      H : aide de régie
+  Tout ce qui peut changer est dans l'objet SOIREE ci-dessous. Rien d'autre à toucher.
+-->
+<script>
+window.SOIREE = {
+
+  // ── HORAIRES ─ À CONFIRMER : les sources ne concordent pas ─────────────────
+  //   Briefing guest (p. 8) : 18:15 accueil · 18:45 ouverture · 18:55 / 19:20 / 19:45 guests
+  //                           20:10 clôture · 20:20 networking
+  //   Plaquette (diapo 3)   : 18:15 portes · 18:30 / 19:00 / 19:30 conférences · 20:15 networking
+  //   Page Luma             : 19:00 – 22:00 (probable erreur de saisie)
+  //   Valeurs ci-dessous = celles du briefing, en attendant la confirmation.
+  //   Seule « ouverture » est montrée au public (écran d'attente) ; les autres
+  //   servent de repères au technicien dans la régie (touche H).
+  horaires: {
+    accueil:   "18:15",
+    ouverture: "18:45",   // écran d'attente : « Mise sous tension · 18:45 »
+    acte1:     "18:55",
+    acte2:     "19:20",
+    acte3:     "19:45",
+    cloture:   "20:10",
+    apero:     "20:20",
+  },
+  compteARebours: true,   // ajoute « on commence dans 12 minutes » (horloge de l'ordinateur)
+
+  // ── LES TROIS ACTES ────────────────────────────────────────────────────────
+  //   nom      : laisser "" tant que le guest n'est pas confirmé.
+  //   ligne    : une ligne sous le nom (facultatif).
+  //   surprise : true  → le nom reste « sous tension » (caché) jusqu'à l'entrée de son acte ;
+  //              false → le nom est montré dès l'écran d'attente.
+  //   fond     : image plein écran pendant l'intervention (fichier à déposer dans fonds/ ;
+  //              .jpg, .jpeg, .png ou .webp acceptés). Tant qu'il manque : fond sobre.
+  guests: [
+    { nom: "Tristan Vincent", ligne: "Créateur de contenu · plus de 600 000 abonnés", surprise: false, fond: "fonds/acte-1.jpg" },
+    { nom: "Thibaut Lucas", ligne: "Ingénieur ENSEEIHT · cofondateur et CEO de Picsellia", surprise: false, fond: "fonds/acte-2.jpg" },
+    { nom: "Sébastien Bonnet", ligne: "Entrepreneur · MonOrdo, Urry, Dropp", surprise: false, fond: "fonds/acte-3.jpg" },
+  ],
+
+  // ── APÉRO / NETWORKING ─────────────────────────────────────────────────────
+  //   lieu : "melee" ou "foyer" (choix de Tristan selon le nombre d'inscrits).
+  apero: {
+    lieu: "melee",
+    lieux: {
+      melee: { nom: "La Mêlée",            avec: "à" },
+      foyer: { nom: "Foyer des étudiants", avec: "au" },
+    },
+    indication: "",       // ex. "Suivez le fléchage." — vide : rien ne s'affiche
+  },
+
+  // ── PARTENAIRES ─ invisibles à l'écran tant que la liste est vide ──────────
+  //   { nom: "Nom du partenaire", logo: "partenaires/logo.png", carte: false }
+  //   carte: true pour un logo sur fond blanc (JPG) : il est posé sur une carte crème.
+  partenaires: [
+  ],
+
+  // ── GÉNÉRIQUE DE FIN ─ les trois guests s'ajoutent automatiquement en tête ─
+  //   Les logos des partenaires (s'il y en a) s'insèrent avant la dernière ligne.
+  generique: [
+    ["Une soirée",    "Genius N7"],
+    ["Avec",          "AIn7"],
+    ["Vidéo",         "TVN7"],
+    ["Lumière",       "CAN7"],
+    ["Lieu",          "Amphi B00 · ENSEEIHT · Toulouse"],
+    ["Et surtout",    "Vous."],
+  ],
+
+  // ── L'ÉVÉNEMENT ────────────────────────────────────────────────────────────
+  evenement: {
+    surtitre:   "RENCONTRES ENTREPRENEURIAT N7",
+    titre:      ["SOIRÉE", "ENTREPRENEURIAT"],
+    date:       "Jeudi 26 novembre 2026",
+    dateCourte: "26.11.2026",
+    lieu:       "Amphi B00 · ENSEEIHT",
+    ville:      "Toulouse",
+  },
+
+  // ── INSCRIPTION (code QR de l'écran d'attente) ─────────────────────────────
+  luma:      "https://luma.com/msnjs8ts",
+  lumaCourt: "luma.com/msnjs8ts",
+
+  // ── RÉGLAGES ───────────────────────────────────────────────────────────────
+  dureePlan: 8,    // secondes par plan sur l'écran d'attente
+  grain: true,     // grain de pellicule (false si l'ordinateur peine)
+};
+</script>
+<title>Genius N7 · Soirée Entrepreneuriat · écran</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+@font-face{font-family:"Inter";src:url("polices/Inter-latin.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:block;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Inter";src:url("polices/Inter-latin-ext.woff2") format("woff2");font-weight:100 900;font-style:normal;font-display:block;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+:root{
+  --noir:#0B0B0B; --filet:#2A2A2A; --gris:#8D8D8D; --creme:#F4F0E7;
+  --or:#D3B25B; --or-clair:#FEDD74; --cuivre:#C48751; --brique:#923A1E;
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;background:#000;overflow:hidden}
+body.cache-souris,body.cache-souris *{cursor:none!important}
+#scene{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;
+  background:radial-gradient(90% 70% at 50% 108%,rgba(146,58,30,.13),rgba(146,58,30,0) 70%),var(--noir);
+  color:var(--creme);font-family:"Inter",Arial,Helvetica,sans-serif;font-kerning:normal;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+.ecran{position:absolute;inset:0;visibility:hidden;opacity:0}
+.abs{position:absolute}
+
+/* typographie de la charte */
+.sur{font-weight:700;font-size:34px;letter-spacing:.32em;color:var(--or);white-space:nowrap;line-height:1}
+.titre{font-weight:800;line-height:.9;letter-spacing:-.012em;color:var(--creme);white-space:nowrap;-webkit-text-stroke-width:var(--sw,4px)}
+.titre .ligne{display:block;width:max-content}
+.sous{font-weight:500;font-size:46px;line-height:1.15;color:rgba(244,240,231,.82);white-space:nowrap}
+/* contour peint sous le remplissage : seul le bord extérieur des lettres reste visible */
+.l{-webkit-text-stroke-color:transparent;paint-order:stroke fill}
+
+/* masques : le texte sort du filament */
+.masque{position:absolute;overflow:hidden}
+.masque>.dedans{position:absolute;left:40px;will-change:transform}
+
+/* filament */
+.fil{position:absolute;pointer-events:none;opacity:0}
+.fil i{position:absolute;display:block}
+.fil .coeur{left:0;top:0;width:100%;height:100%;border-radius:99px}
+.fil .gaine{left:-4px;top:-4px;right:-4px;bottom:-4px;border:2px solid rgba(196,135,81,.82);border-radius:99px}
+.fil .halo{left:-90px;right:-90px;top:-60px;bottom:-60px}
+.fil.v .halo{left:-60px;right:-60px;top:-90px;bottom:-90px}
+
+/* pied (charte) */
+.pied{position:absolute;left:112px;right:112px;top:1002px;border-top:1px solid var(--filet);display:flex;justify-content:space-between;padding-top:20px;font-weight:600;font-size:19px;letter-spacing:.22em;color:var(--gris);white-space:nowrap}
+.pied .or{color:var(--or)}
+
+/* carte QR (reprend la carte crème de la plaquette) */
+.carteqr{position:absolute;background:var(--creme);color:#141414;padding:44px 44px 34px;box-shadow:0 0 0 2px rgba(211,178,91,.9),0 30px 80px rgba(0,0,0,.55)}
+.carteqr svg{display:block;margin:0 auto}
+.carteqr .appel{margin-top:26px;font-weight:800;font-size:23px;letter-spacing:.17em;text-align:center;white-space:nowrap}
+.carteqr .url{margin-top:10px;font-weight:500;font-size:21px;color:#555;text-align:center;letter-spacing:.01em}
+
+/* logo G */
+.logo{position:absolute;transform-origin:50% 50%}
+.logo .carre{position:absolute;inset:0;background:linear-gradient(135deg,#FEDD74 0%,#E1B264 50%,#C48751 100%)}
+.logo svg{position:absolute;overflow:visible}
+
+/* tableau des trois actes */
+.etiquette{font-weight:700;font-size:30px;letter-spacing:.3em;color:var(--or);white-space:nowrap}
+.nomcol{font-weight:800;line-height:.95;letter-spacing:-.005em;white-space:nowrap;-webkit-text-stroke-width:3.2px}
+.nomcol .ligne{display:block;width:max-content}
+
+/* fonds des guests */
+.fondimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none}
+.signature{font-weight:700;font-size:24px;letter-spacing:.3em;color:rgba(211,178,91,.75);white-space:nowrap}
+
+/* générique */
+.defile{position:absolute;left:0;right:0;top:0;will-change:transform;text-align:center}
+.cr{padding:0 112px 88px}
+.cr .role{display:block;font-weight:700;font-size:30px;letter-spacing:.3em;text-indent:.3em;color:var(--or);white-space:nowrap}
+.cr .qui{display:inline-block;margin-top:14px;font-weight:800;font-size:76px;line-height:1.05;letter-spacing:-.01em;color:var(--creme);white-space:nowrap}
+.cr .logos{display:flex;gap:56px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:30px}
+.partlogo{max-height:110px;max-width:300px;object-fit:contain}
+.partlogo.silhouette{filter:brightness(0) invert(.94) sepia(.15)}
+.partcarte{background:var(--creme);padding:18px 26px;display:inline-flex;align-items:center}
+.partcarte .partlogo{max-height:90px;filter:none}
+
+/* superpositions */
+#eclair,#vignette,#grain,#noir{position:absolute;inset:0;pointer-events:none}
+#eclair{opacity:0;background:radial-gradient(1190px 690px at var(--ec,960px 540px),rgba(255,242,220,.97),rgba(252,196,118,.64) 24%,rgba(206,116,58,.3) 56%,rgba(146,58,30,0) 100%);mix-blend-mode:screen}
+#vignette{background:radial-gradient(120% 95% at 50% 46%,rgba(0,0,0,0) 58%,rgba(0,0,0,.55) 100%)}
+#grain{inset:-200px;opacity:.075;mix-blend-mode:screen;background-size:256px 256px}
+#noir{background:#000;opacity:0;transition:opacity .5s}
+
+/* régie (invisible pour la salle, touche H) */
+#regie{position:fixed;left:16px;top:16px;width:430px;max-height:calc(100% - 32px);overflow:auto;background:rgba(16,16,16,.94);
+  color:#ddd;font:14px/1.45 "Inter",Arial,sans-serif;padding:16px 18px;border:1px solid #333;display:none;z-index:10}
+#regie h3{margin:0 0 8px;font-size:13px;letter-spacing:.2em;color:var(--or)}
+#regie ol{margin:6px 0 12px;padding-left:22px}
+#regie li.actif{color:#fff;font-weight:700}
+#regie li.actif::marker{color:var(--or)}
+#regie .alerte{color:#f0b46a}
+#regie kbd{display:inline-block;min-width:22px;padding:0 5px;border:1px solid #555;border-radius:3px;font:12px Inter;text-align:center;color:#fff}
+</style>
+</head>
+<body class="cache-souris">
+<div id="scene">
+  <div id="ecrans"></div>
+  <div id="eclair"></div>
+  <div id="vignette"></div>
+  <div id="grain"></div>
+  <div id="noir"></div>
+</div>
+<div id="regie"></div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════════════
+   Encodeur QR (mode octet, correction M, version et masque automatiques).
+   Adapté de l'algorithme de Project Nayuki (licence MIT).
+   ═══════════════════════════════════════════════════════════════════════════ */
+function qrMatrix(text, eclName) {
+  const ECL = { L: [0, 1], M: [1, 0], Q: [2, 3], H: [3, 2] }[eclName || 'M'];
+  const ECC_PER_BLOCK = [
+    [-1, 7, 10, 15, 20, 26, 18, 20, 24, 30, 18, 20, 24, 26, 30, 22, 24, 28, 30, 28, 28, 28, 28, 30, 30, 26, 28, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30],
+    [-1, 10, 16, 26, 18, 24, 16, 18, 22, 22, 26, 30, 22, 22, 24, 24, 28, 28, 26, 26, 26, 26, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28],
+    [-1, 13, 22, 18, 26, 18, 24, 18, 22, 20, 24, 28, 26, 24, 20, 30, 24, 28, 28, 26, 30, 28, 30, 30, 30, 30, 28, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30],
+    [-1, 17, 28, 22, 16, 22, 28, 26, 26, 24, 28, 24, 28, 22, 24, 24, 30, 28, 28, 26, 28, 30, 24, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30]];
+  const NUM_BLOCKS = [
+    [-1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 4, 4, 4, 4, 4, 6, 6, 6, 6, 7, 8, 8, 9, 9, 10, 12, 12, 12, 13, 14, 15, 16, 17, 18, 19, 19, 20, 21, 22, 24, 25],
+    [-1, 1, 1, 1, 2, 2, 4, 4, 4, 5, 5, 5, 8, 9, 9, 10, 10, 11, 13, 14, 16, 17, 17, 18, 20, 21, 23, 25, 26, 28, 29, 31, 33, 35, 37, 38, 40, 43, 45, 47, 49],
+    [-1, 1, 1, 2, 2, 4, 4, 6, 6, 8, 8, 8, 10, 12, 16, 12, 17, 16, 18, 21, 20, 23, 23, 25, 27, 29, 34, 34, 35, 38, 40, 43, 45, 48, 51, 53, 56, 59, 62, 65, 68],
+    [-1, 1, 1, 2, 4, 4, 4, 5, 6, 8, 8, 11, 11, 16, 16, 18, 16, 19, 21, 25, 25, 25, 34, 30, 32, 35, 37, 40, 42, 45, 48, 51, 54, 57, 60, 63, 66, 70, 74, 77, 81]];
+  const bytes = Array.from(new TextEncoder().encode(text));
+  const rawModules = v => { let r = (16 * v + 128) * v + 64; if (v >= 2) { const n = Math.floor(v / 7) + 2; r -= (25 * n - 10) * n - 55; if (v >= 7) r -= 36; } return r; };
+  const dataCw = v => Math.floor(rawModules(v) / 8) - ECC_PER_BLOCK[ECL[0]][v] * NUM_BLOCKS[ECL[0]][v];
+  let ver = 1;
+  for (; ver <= 40; ver++) { const cc = ver < 10 ? 8 : 16; if (4 + cc + bytes.length * 8 <= dataCw(ver) * 8) break; }
+  if (ver > 40) throw new Error('Texte trop long pour un QR');
+  const bits = []; const push = (val, len) => { for (let i = len - 1; i >= 0; i--) bits.push((val >>> i) & 1); };
+  push(4, 4); push(bytes.length, ver < 10 ? 8 : 16); bytes.forEach(b => push(b, 8));
+  const cap = dataCw(ver) * 8;
+  push(0, Math.min(4, cap - bits.length)); push(0, (8 - bits.length % 8) % 8);
+  for (let pad = 0xEC; bits.length < cap; pad ^= 0xEC ^ 0x11) push(pad, 8);
+  const data = []; for (let i = 0; i < bits.length; i += 8) { let b = 0; for (let j = 0; j < 8; j++) b = (b << 1) | bits[i + j]; data.push(b); }
+  const mul = (x, y) => { let z = 0; for (let i = 7; i >= 0; i--) { z = (z << 1) ^ ((z >>> 7) * 0x11D); z ^= ((y >>> i) & 1) * x; } return z & 0xFF; };
+  const divisor = d => { const r = new Array(d).fill(0); r[d - 1] = 1; let root = 1; for (let i = 0; i < d; i++) { for (let j = 0; j < d; j++) { r[j] = mul(r[j], root); if (j + 1 < d) r[j] ^= r[j + 1]; } root = mul(root, 0x02); } return r; };
+  const remainder = (dat, div) => { const r = div.map(() => 0); for (const b of dat) { const f = b ^ r.shift(); r.push(0); div.forEach((c, i) => r[i] ^= mul(c, f)); } return r; };
+  const nb = NUM_BLOCKS[ECL[0]][ver], eccLen = ECC_PER_BLOCK[ECL[0]][ver], raw = Math.floor(rawModules(ver) / 8);
+  const numShort = nb - raw % nb, shortLen = Math.floor(raw / nb);
+  const blocks = []; const div = divisor(eccLen);
+  for (let i = 0, k = 0; i < nb; i++) { const dat = data.slice(k, k + shortLen - eccLen + (i < numShort ? 0 : 1)); k += dat.length; const ecc = remainder(dat, div); if (i < numShort) dat.push(0); blocks.push(dat.concat(ecc)); }
+  const allCw = [];
+  for (let i = 0; i < blocks[0].length; i++) blocks.forEach((b, j) => { if (i !== shortLen - eccLen || j >= numShort) allCw.push(b[i]); });
+  const size = ver * 4 + 17;
+  const mod = Array.from({ length: size }, () => new Array(size).fill(false));
+  const fn = Array.from({ length: size }, () => new Array(size).fill(false));
+  const setF = (x, y, d) => { mod[y][x] = d; fn[y][x] = true; };
+  for (let i = 0; i < size; i++) { setF(6, i, i % 2 === 0); setF(i, 6, i % 2 === 0); }
+  const finder = (cx, cy) => { for (let dy = -4; dy <= 4; dy++) for (let dx = -4; dx <= 4; dx++) { const d = Math.max(Math.abs(dx), Math.abs(dy)), x = cx + dx, y = cy + dy; if (x >= 0 && x < size && y >= 0 && y < size) setF(x, y, d !== 2 && d !== 4); } };
+  finder(3, 3); finder(size - 4, 3); finder(3, size - 4);
+  const alignPos = (() => { if (ver === 1) return []; const n = Math.floor(ver / 7) + 2; const step = Math.floor((ver * 8 + n * 3 + 5) / (n * 4 - 4)) * 2; const r = [6]; for (let p = size - 7; r.length < n; p -= step) r.splice(1, 0, p); return r; })();
+  alignPos.forEach((ay, i) => alignPos.forEach((ax, j) => { if ((i === 0 && j === 0) || (i === 0 && j === alignPos.length - 1) || (i === alignPos.length - 1 && j === 0)) return; for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) setF(ax + dx, ay + dy, Math.max(Math.abs(dx), Math.abs(dy)) !== 1); }));
+  const drawFormat = mask => {
+    const dat = ECL[1] << 3 | mask; let rem = dat; for (let i = 0; i < 10; i++) rem = (rem << 1) ^ ((rem >>> 9) * 0x537); const b = (dat << 10 | rem) ^ 0x5412;
+    const g = i => ((b >>> i) & 1) !== 0;
+    for (let i = 0; i <= 5; i++) setF(8, i, g(i)); setF(8, 7, g(6)); setF(8, 8, g(7)); setF(7, 8, g(8)); for (let i = 9; i < 15; i++) setF(14 - i, 8, g(i));
+    for (let i = 0; i < 8; i++) setF(size - 1 - i, 8, g(i)); for (let i = 8; i < 15; i++) setF(8, size - 15 + i, g(i)); setF(8, size - 8, true);
+  };
+  drawFormat(0);
+  if (ver >= 7) { let rem = ver; for (let i = 0; i < 12; i++) rem = (rem << 1) ^ ((rem >>> 11) * 0x1F25); const b = ver << 12 | rem; for (let i = 0; i < 18; i++) { const c = ((b >>> i) & 1) !== 0, a = size - 11 + i % 3, bb = Math.floor(i / 3); setF(a, bb, c); setF(bb, a, c); } }
+  let bi = 0;
+  for (let right = size - 1; right >= 1; right -= 2) { if (right === 6) right = 5; for (let vert = 0; vert < size; vert++) for (let j = 0; j < 2; j++) { const x = right - j, up = ((right + 1) & 2) === 0, y = up ? size - 1 - vert : vert; if (!fn[y][x] && bi < allCw.length * 8) { mod[y][x] = ((allCw[bi >>> 3] >>> (7 - (bi & 7))) & 1) !== 0; bi++; } } }
+  const maskFn = [(x, y) => (x + y) % 2 === 0, (x, y) => y % 2 === 0, (x, y) => x % 3 === 0, (x, y) => (x + y) % 3 === 0, (x, y) => (Math.floor(x / 3) + Math.floor(y / 2)) % 2 === 0, (x, y) => x * y % 2 + x * y % 3 === 0, (x, y) => (x * y % 2 + x * y % 3) % 2 === 0, (x, y) => ((x + y) % 2 + x * y % 3) % 2 === 0];
+  const applyMask = m => { for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) if (!fn[y][x] && maskFn[m](x, y)) mod[y][x] = !mod[y][x]; };
+  const penalty = () => {
+    let r = 0;
+    const runs = line => { let s = 0; let col = line[0], n = 0; const hist = [];
+      for (const c of line) { if (c === col) n++; else { hist.push([col, n]); col = c; n = 1; } } hist.push([col, n]);
+      hist.forEach(([, k]) => { if (k >= 5) s += 3 + (k - 5); });
+      const lens = hist.map(h => h[1]), cols = hist.map(h => h[0]);
+      for (let i = 2; i + 2 < hist.length; i++) { if (!cols[i]) continue; const n1 = lens[i] / 3; if (n1 % 1 !== 0) continue;
+        if (lens[i - 1] === n1 && lens[i + 1] === n1 && lens[i - 2] === n1 && lens[i + 2] === n1 && cols[i - 2] && cols[i + 2]) {
+          const bOk = (i - 3 < 0) || (!cols[i - 3] && lens[i - 3] >= n1 * 4), aOk = (i + 3 >= hist.length) || (!cols[i + 3] && lens[i + 3] >= n1 * 4);
+          if (bOk || aOk) s += 40; } }
+      return s; };
+    for (let y = 0; y < size; y++) r += runs(mod[y]);
+    for (let x = 0; x < size; x++) r += runs(mod.map(row => row[x]));
+    for (let y = 0; y < size - 1; y++) for (let x = 0; x < size - 1; x++) { const c = mod[y][x]; if (c === mod[y][x + 1] && c === mod[y + 1][x] && c === mod[y + 1][x + 1]) r += 3; }
+    let dark = 0; mod.forEach(row => row.forEach(c => { if (c) dark++; }));
+    const total = size * size; r += (Math.ceil(Math.abs(dark * 20 - total * 10) / total) - 1) * 10;
+    return r; };
+  let best = 0, bestP = Infinity;
+  for (let m = 0; m < 8; m++) { applyMask(m); drawFormat(m); const p = penalty(); if (p < bestP) { bestP = p; best = m; } applyMask(m); }
+  applyMask(best); drawFormat(best);
+  return { size, modules: mod };
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   LE SPECTACLE — « Mise sous tension »
+   La charte (charbon, brique, cuivre, or, crème) est lue comme la montée en
+   température d'un filament : tout ce qui s'allume à l'écran suit cette rampe.
+   ═══════════════════════════════════════════════════════════════════════════ */
+(() => {
+'use strict';
+// une faute de frappe dans le bloc SOIREE ne doit pas donner un écran noir muet
+function panne(msg) {
+  const d = document.createElement('div');
+  Object.assign(d.style, { position: 'fixed', inset: '0', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8vw', background: '#0d0b0a', color: '#f4f0e7', font: '500 28px/1.5 Inter, Arial, sans-serif', textAlign: 'center', zIndex: 99 });
+  d.textContent = msg;
+  document.body.appendChild(d);
+}
+const D = window.SOIREE;
+if (!D || typeof D !== 'object') {
+  panne('Le bloc SOIREE, en haut de index.html, contient une faute de frappe (souvent une virgule ou un guillemet oublié près de la dernière modification). Touche F12, onglet « Console » : le numéro de la ligne fautive y est indiqué.');
+  return;
+}
+// valeurs par défaut si un champ a été effacé par erreur
+if (!Array.isArray(D.guests)) D.guests = [];
+while (D.guests.length < 3) D.guests.push({ nom: '', ligne: '', surprise: true, fond: '' });
+D.apero = D.apero || {};
+D.evenement = Object.assign({ surtitre: '', titre: ['SOIRÉE', 'ENTREPRENEURIAT'], date: '', dateCourte: '', lieu: '', ville: 'Toulouse' }, D.evenement || {});
+if (!Array.isArray(D.evenement.titre)) D.evenement.titre = [String(D.evenement.titre)];
+const W = 1920, H = 1080, M = 112;
+const scene = document.getElementById('scene');
+const ecransEl = document.getElementById('ecrans');
+const params = new URLSearchParams(location.search);
+const CAPTURE = params.has('capture');
+const G_PATH = 'M442.7 1C455.5 0.1 470.8 0 480.2 0.1C488.9 0.2 490.7 0.6 499.4 1.4C508.9 2.3 524.3 3.3 537.6 5.3C550.9 7.3 566.3 10.2 579.1 13.2C591.8 16.1 601.4 18.7 614.2 22.9C626.9 27.1 643 33.1 655.6 38.5C668.3 43.8 678 48.7 690.1 55.2C702.1 61.7 716.5 70.2 727.7 77.5C739 84.8 747.4 91 757.7 99.1C768 107.3 780.1 117.6 789.5 126.2C799 134.8 805.8 141.4 814.4 150.8C822.9 160.2 832.4 171.6 841 182.7C849.5 193.9 858.7 207.2 865.7 217.8C872.7 228.4 877.9 237.5 882.9 246.5C887.9 255.5 892 264 895.7 272C899.5 280 902.8 287.9 905.4 294.3C908 300.7 910.1 306 911.2 310.3C912.2 314.5 912.2 317.3 911.6 319.8C911 322.4 908.7 324.3 907.5 325.5C906.4 326.7 906 327 904.3 327.3C901.7 328 897.4 329.1 891.6 329.1C869.8 329.4 794.9 329.1 773.6 328.9C769.2 328.8 766.2 328.3 764 327.9C762.5 327.6 762 327.4 760.8 326.6C759.6 325.8 758.2 325.1 756.8 323C752.6 316.6 742.7 298.6 735.5 287.9C728.4 277.3 722.3 268.9 713.8 259.2C705.2 249.6 691.3 236.5 684.3 229.8C678.8 224.6 676.3 222.8 671.6 219C666.8 215.2 663.2 212.1 655.6 207.2C647.1 201.6 629.6 190.9 620.5 185.8C612.1 181 608.8 179.6 601.4 176.3C593.9 173.1 585.5 169.3 575.9 166.1C566.3 162.8 555.2 159.4 544 156.9C532.8 154.3 520.6 152.2 508.9 150.8C497.2 149.4 486.1 148.7 473.9 148.6C461.6 148.5 447.8 149.1 435.6 150.4C423.4 151.6 409 154.7 400.5 156.2C393.2 157.6 390.4 158.3 384.6 159.8C378.7 161.4 373.9 162.3 365.4 165.6C355.9 169.3 339.4 175.9 327.2 182C315 188 302.3 195.3 292.2 201.8C282.1 208.4 274 215 266.6 221C259.1 227 254.1 231.4 247.4 237.8C240.8 244.2 234 250.9 226.9 259.2C219.7 267.6 210.3 280 204.5 287.9C198.8 295.9 195.7 301.2 192.1 307.1C188.5 312.9 186.8 315.6 183.1 323C179.5 330.5 173.7 343.2 170.2 351.7C166.7 360.2 164.2 368 162.1 374C160.1 380.1 159.7 381.5 158.2 387.8C156.4 395.3 153.3 408.2 151.6 418.7C149.9 429.1 148.6 441 147.9 450.6C147.2 460.1 147.4 468.6 147.5 476.1C147.6 483.5 147.3 486.6 148.4 495.2C149.7 505.3 152.5 524.1 155 536.4C157.5 548.6 160.2 558.9 163.3 568.6C166.3 578.2 169.5 585.6 173.2 594.1C176.8 602.6 180.9 611.6 185.1 619.6C189.2 627.6 191.6 632.3 198.2 641.9C204.8 651.5 215.3 666.1 224.5 677C233.8 687.8 246 699.6 253.8 707.1C261.3 714.2 266.8 717.6 271.3 721.6C275.7 725.6 277.3 727.5 280.2 731.2C283.2 734.9 285.9 738.1 289 743.9C292.2 749.8 296.7 759.4 299.4 766.3C302.1 773.2 303.5 777.4 305.5 785.4C307.6 793.4 309.2 801 311.6 814.1C314.9 832.2 323.1 878.9 325.3 893.8C326 898.1 325.2 901.3 325 903.4C324.9 904.9 324.7 905.5 324.2 906.6C323.7 907.6 323.1 908.8 322 909.8C320.9 910.7 319.4 911.8 317.6 912.2C315.8 912.6 314 913 311.2 912.3C306.4 911 298.7 909 288.9 904.7C278.3 900 259.1 890.6 247.4 884.5C235.8 878.4 226.9 873.1 219 868.3C211 863.5 205.6 859.7 199.7 855.5C193.8 851.4 190.7 849.3 183.7 843.6C175.2 836.7 159.2 823.9 148.6 814.1C138 804.3 128.9 794.7 119.9 784.7C110.9 774.6 102.8 764.5 94.5 753.5C86.2 742.5 78.1 731.4 70.1 718.4C62.1 705.5 52.6 687.6 46.6 675.7C40.5 663.7 38.1 657.8 33.8 646.9C29.5 635.9 24.4 622 20.6 610C16.8 598 12.8 582.9 10.9 574.9C9.5 569.2 10.2 567.9 9.2 562.2C8.1 556.3 6 550.1 4.6 539.9C3.1 529.2 0.9 512.2 0.2 498.4C-0.6 484.6 -0.2 467.6 -0.1 457C0 446.8 -0.1 444.7 0.7 434.6C1.6 424.5 2.6 410.2 4.9 396.4C7.2 382.5 11.5 363.9 14.5 351.7C17.5 339.5 18.9 334.7 22.9 323C27 311.3 32.9 294.9 38.8 281.6C44.7 268.3 51.7 255.3 58.3 243.3C64.9 231.3 70.1 221.7 78.4 209.5C86.8 197.2 99.2 181.1 108.2 170C117.3 158.9 123.2 152.4 132.7 142.9C142.1 133.3 155.5 120.8 164.9 112.6C174.3 104.3 180 100 189 93.4C198 86.8 207.8 79.9 218.7 73C229.7 66.1 242.7 58.3 254.9 52C267.1 45.7 280 40 292.1 35.1C304.1 30.2 317.1 25.9 327.2 22.5C337.3 19.2 344.2 17.3 352.7 15.1C361.2 12.8 369.7 10.8 378.2 9.1C386.7 7.5 392.9 6.5 403.7 5.2C414.5 3.8 430 1.8 442.7 1Z M650.8 485.7C655 484.7 662.1 483.4 671.6 483.3C715.9 483 874 483.2 917.1 483.4C922.9 483.5 927.2 484.3 929.8 484.7C931.4 484.9 932 485.2 933 485.8C934 486.5 935.1 487.3 935.9 488.8C936.7 490.4 937.5 492.2 937.8 495.2C938.1 498.4 938.2 502.2 937.8 508C937.4 514.3 936.3 525.5 935.3 533.5C934.3 541.5 933.2 548.9 931.9 555.8C930.6 562.7 929.7 566.3 927.6 574.9C925.3 584 921.9 598.3 918.3 610C914.7 621.7 910.6 633.4 905.9 645.1C901.2 656.8 895.3 669.5 890 680.2C884.8 690.8 880.7 698.2 874.3 708.9C868 719.5 857.9 735 851.7 743.9C845.6 752.8 843.5 755.2 837.4 762.7C831.3 770.1 822.6 780.5 815.1 788.6C807.7 796.7 798.6 805.6 792.7 811.3C787.1 816.9 786 818.1 780 823.2C773.9 828.5 763.1 837.4 756.2 842.8C749.2 848.2 745.5 850.9 738.5 855.6C731.6 860.4 723.4 866 714.4 871.5C705.3 877 696.2 882.5 684.3 888.5C672.4 894.5 651.9 903.5 642.9 907.4C637.2 909.8 633.8 910.8 630.1 911.7C626.4 912.6 623.1 913 620.5 912.7C618 912.4 616.1 910.8 614.8 909.8C613.5 908.7 613.1 908.2 612.7 906.6C612.2 905 611.9 902.8 611.9 900.2C611.9 897.5 611.9 894.9 612.6 890.6C614.4 879.5 619.7 848.6 622.5 833.2C625.4 817.8 626.9 809.3 629.8 798.2C632.6 787 636.4 774.8 639.7 766.1C642.9 757.4 645.5 752.6 649.2 746.2C652.9 739.9 658.7 732.1 661.9 728C664.4 724.7 665.2 724.2 668.4 721.4C672.1 718.1 679.1 712.9 684.3 708.2C689.6 703.4 695.2 697.6 699.9 692.9C704.5 688.3 708 684.9 712.2 680.2C716.4 675.4 719.9 671.1 725.1 664.2C730.3 657.3 738.1 646.7 743.2 638.7C748.3 630.7 753.2 621.2 755.7 616.4C757.1 613.7 758 610 758 610C758 610 755.7 606.8 755.7 606.8C755.7 606.8 753.3 605.9 751.3 605.9C735.1 605.6 675.6 605.7 658.8 605.4C654.9 605.3 652.3 604.5 650.3 603.6C648.3 602.8 647.7 602 646.7 600.4C645.7 598.9 644.8 596.2 644.2 594.1C643.6 591.9 643.4 590.6 643.4 587.7C643.2 572.8 643.1 520.7 643.4 504.8C643.5 498.9 644.7 494.7 645.2 492C645.5 490.5 645.7 489.9 646.7 488.8C647.6 487.8 648.5 486.2 650.8 485.7Z M359.1 941.6C363.4 941 369.5 940.9 378.2 940.9C414.3 940.8 541.9 940.7 575.9 941C578.9 941 580.5 941.8 582.3 942.4C584 943 585.2 943.9 586.3 944.8C587.4 945.8 588.1 946.4 588.7 948C589.2 949.6 590 951.5 589.6 954.4C589.1 957.6 588.2 962.4 585.7 967.2C583.2 971.9 578.3 978.8 574.3 983.1C570.4 987.4 566.5 990.1 561.9 992.7C557.4 995.2 551.8 997.2 547.2 998.4C542.6 999.6 540.3 999.7 534.4 999.8C510 1000 424.4 999.9 400.5 999.7C396.1 999.6 394.7 999.3 390.9 998.2C387.2 997.1 382.5 995.6 378.2 993.1C373.8 990.6 368 985.9 364.9 983.1C361.8 980.4 361.2 979.4 359.1 976.2C356.9 973 353.7 967.2 352.1 964C350.5 960.8 350 958.7 349.5 956.6C349 954.5 348.8 952.6 348.9 951.2C349 949.8 349.3 949.1 349.9 948C350.6 947 351 945.9 352.5 944.8C354 943.8 355.8 942.2 359.1 941.6Z';
+const G_RATIO = 938 / 1000;
+
+/* ── utilitaires ─────────────────────────────────────────────────────────── */
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const lerp = (a, b, t) => a + (b - a) * t;
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const smooth = t => t * t * (3 - 2 * t);
+const easeOut = t => 1 - Math.pow(1 - t, 3);
+const easeIn = t => t * t * t;
+const easeInOut = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+const expoOut = t => t >= 1 ? 1 : 1 - Math.pow(2, -10 * t);
+const hash = n => { const s = Math.sin(n * 127.1 + 311.7) * 43758.5453; return s - Math.floor(s); };
+const bruit = t => { const i = Math.floor(t), f = t - i; return lerp(hash(i), hash(i + 1), f * f * (3 - 2 * f)); };
+const caps = s => String(s || '').toLocaleUpperCase('fr-FR').replace(/AIN7/g, 'AIn7');
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const el = (tag, cls, parent, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; if (parent) parent.appendChild(e); return e; };
+const px = v => v.toFixed(1) + 'px';
+const ROM = ['I', 'II', 'III'];
+const ORD = ['PREMIÈRE', 'DEUXIÈME', 'TROISIÈME'];
+
+/* ── la rampe de chauffe : la charte, du filet éteint au blanc chaud ────── */
+const RAMPE = [
+  [0.00, [40, 38, 36]],      // filet éteint  #2A2A2A
+  [0.18, [92, 34, 18]],      // braise
+  [0.34, [146, 58, 30]],     // brique
+  [0.55, [196, 135, 81]],    // cuivre        #C48751
+  [0.70, [211, 178, 91]],    // or            #D3B25B
+  [0.86, [254, 221, 116]],   // or clair      #FEDD74
+  [1.00, [255, 248, 234]],   // blanc chaud
+];
+function chaleur(h) {
+  h = clamp(h);
+  for (let i = 1; i < RAMPE.length; i++) if (h <= RAMPE[i][0]) {
+    const [h0, c0] = RAMPE[i - 1], [h1, c1] = RAMPE[i], k = (h - h0) / (h1 - h0);
+    return [lerp(c0[0], c1[0], k), lerp(c0[1], c1[1], k), lerp(c0[2], c1[2], k)];
+  }
+  return RAMPE[RAMPE.length - 1][1];
+}
+const rgba = (c, a) => `rgba(${c[0] | 0},${c[1] | 0},${c[2] | 0},${clamp(a).toFixed(3)})`;
+
+/* ── le filament (horizontal ou vertical) ──────────────────────────────── */
+class Fil {
+  // vertical : tube (avec sa gaine de verre) ; horizontal : fil nu
+  constructor(parent, vertical = false, ep = 4, gaine = vertical) {
+    this.v = vertical; this.ep = ep;
+    this.e = el('div', 'fil' + (vertical ? ' v' : ''), parent);
+    this.halo = el('i', 'halo', this.e);
+    this.gaine = gaine ? el('i', 'gaine', this.e) : null;
+    this.coeur = el('i', 'coeur', this.e);
+    this.k = ''; this.h = -1; this.a = -1;
+  }
+  pose(x, y, l) {
+    const k = `${x.toFixed(1)}|${y.toFixed(1)}|${l.toFixed(1)}`;
+    if (k === this.k) return this; this.k = k;
+    const s = this.e.style; s.left = px(x); s.top = px(y);
+    if (this.v) { s.width = this.ep + 'px'; s.height = px(Math.max(0, l)); }
+    else { s.height = this.ep + 'px'; s.width = px(Math.max(0, l)); }
+    return this;
+  }
+  chauffe(h, a = 1) {
+    h = clamp(h); a = clamp(a);
+    if (Math.abs(h - this.h) < .0015 && Math.abs(a - this.a) < .0015) return this;
+    this.h = h; this.a = a;
+    const c = chaleur(h), g = chaleur(h * .9), k = Math.pow(seg(h, .06, 1), .85);
+    this.coeur.style.background = rgba(c, .42 + .58 * smooth(seg(h, .05, .4)));
+    this.coeur.style.boxShadow = k > .01
+      ? `0 0 ${px(2 + 5 * k)} ${rgba(c, .9 * k)},0 0 ${px(8 + 20 * k)} ${rgba(g, .75 * k)},0 0 ${px(24 + 66 * k)} ${rgba(g, .46 * k)}`
+      : 'none';
+    this.halo.style.background = `radial-gradient(closest-side,${rgba(g, .3 * k)},${rgba(g, 0)})`;
+    if (this.gaine) {
+      this.gaine.style.opacity = (.8 * (1 - smooth(seg(h, .22, .62)))).toFixed(3);
+      // froid : un fil mince dans le tube de verre ; allumé : la lumière remplit le tube
+      const f = lerp(.3, 1, smooth(seg(h, .25, .7)));
+      if (this.v) { this.coeur.style.left = px(this.ep * (1 - f) / 2); this.coeur.style.width = px(this.ep * f); }
+      else { this.coeur.style.top = px(this.ep * (1 - f) / 2); this.coeur.style.height = px(this.ep * f); }
+    }
+    this.e.style.opacity = a.toFixed(3);
+    return this;
+  }
+}
+
+/* ── les lettres qui chauffent ─────────────────────────────────────────────
+   p = progression d'allumage : 0 éteint (contour cuivre) · .22 braise · .42 or
+       · .58 surchauffe blanche · 1 allumé (crème, halo doux)                 */
+const TK = [
+  // p     remplissage       a     contour  g1   a1    g2    a2   chaleur halo
+  [0.00, [92, 34, 18], 0.00, 0.90, 0, 0.00, 0, 0.00, .34],
+  [0.22, [146, 58, 30], 0.88, 0.60, 14, 0.45, 36, 0.24, .40],
+  [0.42, [214, 176, 92], 1.00, 0.18, 22, 0.62, 66, 0.36, .70],
+  [0.58, [255, 248, 234], 1.00, 0.00, 26, 0.95, 110, 0.55, .92],
+  [1.00, [244, 240, 231], 1.00, 0.00, 22, 0.22, 90, 0.13, .74],
+];
+const CUIVRE = [196, 135, 81], FOND = [13, 11, 10];
+function lettreChauffe(s, p, a = 1) {
+  p = clamp(p);
+  if (s._p !== undefined && Math.abs(s._p - p) < .002 && s._a === a) return;
+  s._p = p; s._a = a;
+  let i = 1; while (i < TK.length - 1 && p > TK[i][0]) i++;
+  const A = TK[i - 1], B = TK[i], k = smooth(clamp((p - A[0]) / (B[0] - A[0])));
+  const L = j => lerp(A[j], B[j], k);
+  const fill = [lerp(A[1][0], B[1][0], k), lerp(A[1][1], B[1][1], k), lerp(A[1][2], B[1][2], k)];
+  const gc = chaleur(L(8));
+  // remplissage opaque (mélangé au noir de la scène) : il masque l'intérieur du contour
+  const fa = L(2);
+  s.style.color = rgba([lerp(FOND[0], fill[0], fa), lerp(FOND[1], fill[1], fa), lerp(FOND[2], fill[2], fa)], a);
+  s.style.webkitTextStrokeColor = rgba(CUIVRE, L(3) * a);
+  const a1 = L(5) * a, a2 = L(7) * a;
+  s.style.textShadow = (a1 > .005 || a2 > .005) ? `0 0 ${px(L(4))} ${rgba(gc, a1)},0 0 ${px(L(6))} ${rgba(gc, a2)}` : 'none';
+}
+
+/* ── blocs de texte ─────────────────────────────────────────────────────── */
+function bloc(parent, cls, lignes) {
+  const b = el('div', cls, parent); const spans = [];
+  lignes.forEach(txt => {
+    const li = el('span', 'ligne', b);
+    for (const ch of txt) {
+      if (ch === ' ') { li.append(' '); continue; }
+      const s = el('span', 'l', li); s.textContent = ch; spans.push(s);
+    }
+  });
+  b.spans = spans;
+  // une capitale accentuée en 2e ligne toucherait la ligne du dessus : on desserre
+  if (lignes.slice(1).some(l => /[ÀÂÄÉÈÊËÎÏÔÖÙÛÜŸ]/.test(l))) b.style.lineHeight = '1.14';
+  if (/\btitre\b/.test(cls) && /[ÀÂÄÉÈÊËÎÏÔÖÙÛÜŸ]/.test(lignes[0] || '')) b.style.paddingTop = '.12em';
+  return b;
+}
+function largeur(b) { let w = 0; b.querySelectorAll('.ligne').forEach(l => { w = Math.max(w, l.offsetWidth); }); return w; }
+function ajuste(b, maxW, maxPx, minPx = 20) {
+  b.style.fontSize = '100px';
+  const w = largeur(b);
+  const f = clamp(Math.floor(100 * maxW / Math.max(1, w)), minPx, maxPx);
+  b.style.fontSize = f + 'px';
+  b.taille = f;
+  return f;
+}
+function nomLignes(nom) {
+  const w = caps(nom).trim().split(/\s+/).filter(Boolean);
+  if (w.length <= 2) return w;
+  let best = 1, bd = 1e9;
+  for (let k = 1; k < w.length; k++) { const d = Math.abs(w.slice(0, k).join(' ').length - w.slice(k).join(' ').length); if (d < bd) { bd = d; best = k; } }
+  return [w.slice(0, best).join(' '), w.slice(best).join(' ')];
+}
+const lieuApero = () => {
+  const lieux = D.apero.lieux || {};
+  let cle = String(D.apero.lieu || '');
+  if (!lieux[cle]) {
+    const n = cle.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    if (/melee/.test(n) && lieux.melee) cle = 'melee';
+    else if (/foyer/.test(n) && lieux.foyer) cle = 'foyer';
+  }
+  const L = lieux[cle] || { nom: String(D.apero.lieu || ''), avec: 'à' };
+  return { nom: L.nom, phrase: `${L.avec} ${L.nom}` };
+};
+const nomDe = i => (D.guests[i] && D.guests[i].nom || '').trim();
+
+/* ── éléments de charte ──────────────────────────────────────────────────── */
+function pied(root, droite) {
+  return el('div', 'pied', root, `<span><span class="or">GENIUS N7</span> · AIn7 · ${esc(D.evenement.dateCourte)}</span><span>${esc(droite || ('ENSEEIHT · ' + caps(D.evenement.ville)))}</span>`);
+}
+function logoG(parent, taille) {
+  const L = el('div', 'logo', parent);
+  L.style.width = L.style.height = taille + 'px';
+  const carre = el('div', 'carre', L);
+  const gh = taille * .56, gw = gh * G_RATIO;
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('viewBox', '0 0 938 1000');
+  Object.assign(svg.style, { left: px((taille - gw) / 2), top: px((taille - gh) / 2), width: px(gw), height: px(gh) });
+  svg.innerHTML = `<path class="plein" d="${G_PATH}" fill="#fff"/>`;
+  L.appendChild(svg);
+  L.carre = carre; L.svg = svg; L.plein = svg.querySelector('.plein');
+  return L;
+}
+function qrSVG(texte, module) {
+  const q = qrMatrix(texte, 'M'); let d = '';
+  q.modules.forEach((row, y) => row.forEach((c, x) => { if (c) d += `M${x} ${y}h1v1h-1z`; }));
+  const t = q.size * module;
+  return `<svg viewBox="0 0 ${q.size} ${q.size}" width="${t}" height="${t}" shape-rendering="crispEdges"><path d="${d}" fill="#141414"/></svg>`;
+}
+/* un masque dont un bord est la ligne du filament : le texte en sort */
+function masque(root, x, y, w, h, contenuEnHaut) {
+  const m = el('div', 'masque', root);
+  Object.assign(m.style, { left: px(x - 40), top: px(y), width: px(w + 80), height: px(h) });
+  const d = el('div', 'dedans', m);
+  if (contenuEnHaut) d.style.bottom = '0px'; else d.style.top = '0px';
+  return d;
+}
+
+/* éclair global (surtension) */
+const eclairEl = document.getElementById('eclair');
+let eclairDemande = 0, eclairX = 960, eclairY = 540, eclairPos = '';
+const eclair = (a, x = 960, y = 540) => { if (a > eclairDemande) { eclairDemande = a; eclairX = x; eclairY = y; } };
+
+/* ═════════════════════════ LES ÉCRANS ═════════════════════════════════════ */
+const ECRANS = [];
+function ecran(id, nom, opts = {}) {
+  const root = el('section', 'ecran', ecransEl); root.dataset.id = id;
+  const E = Object.assign({ id, nom, root, fin: 3, fondu: .9, retard: .25, frame: () => {} }, opts);
+  ECRANS.push(E);
+  return E;
+}
+
+/* ── 1 · ATTENTE ─ le filament couve, les phrases en sortent ───────────── */
+function construireAttente() {
+  const E = ecran('attente', 'Attente (boucle)', { boucle: true, fondu: 1.2, retard: 0, heure: D.horaires && D.horaires.accueil });
+  const r = E.root;
+  pied(r);
+  const LY = 736, X = M, ZW = 1170;
+  const plans = [];
+  const ajout = o => plans.push(o);
+  ajout({ sur: D.evenement.surtitre, lignes: D.evenement.titre.map(caps), sous: `${D.evenement.date} · ${D.evenement.lieu}`, h: .5, max: 156 });
+  ajout({ sur: 'CE SOIR', lignes: ['TROIS HISTOIRES', 'QUI SE RÉPONDENT.'], sous: 'Un show narratif, puis du réseau.', h: .56, max: 150 });
+  const caches = [];
+  D.guests.forEach((g, i) => {
+    if (nomDe(i) && !g.surprise) ajout({ sur: `ACTE ${ROM[i]}`, lignes: nomLignes(nomDe(i)), sous: g.ligne || '', h: .9, max: 190, allume: true });
+    else caches.push(i);
+  });
+  if (caches.length) {
+    const lab = caches.length === 1 ? `ACTE ${ROM[caches[0]]}` : caches.length === 2 ? `ACTES ${ROM[caches[0]]} ET ${ROM[caches[1]]}` : 'ACTES I, II ET III';
+    const sous = caches.length === 1 ? 'Un nom. Il s’allume sur scène.' : `${caches.length === 2 ? 'Deux' : 'Trois'} noms. Ils s’allument sur scène.`;
+    ajout({ sur: lab, lignes: ['SOUS', 'TENSION.'], sous, h: .26, max: 190, tension: caches.length });
+  }
+  if (D.horaires && D.horaires.ouverture) ajout({ sur: 'MISE SOUS TENSION', lignes: [D.horaires.ouverture], sous: 'Prends place.', h: .62, max: 300, horaire: true });
+  ajout({ sur: 'ENSUITE', lignes: ['LA CONVERSATION', 'CONTINUE.'], sous: `Buffet · rencontres · ${lieuApero().phrase}`, h: .7, max: 150 });
+  const parts = (D.partenaires || []).filter(p => p && p.logo);
+  if (parts.length) ajout({ sur: 'AVEC LE SOUTIEN DE', lignes: [], sous: parts.map(p => p.nom).filter(Boolean).join(' · '), h: .6, partenaires: parts });
+
+  plans.forEach(p => {
+    p.haut = masque(r, X, 0, ZW + 200, LY - 14, true);
+    p.sw = el('div', 'sur', p.haut, esc(p.sur));
+    p.sw.style.marginBottom = '30px';
+    if (p.partenaires) {
+      const rang = el('div', '', p.haut); Object.assign(rang.style, { display: 'flex', gap: '56px', alignItems: 'center', height: '170px', marginBottom: '26px' });
+      p.partenaires.forEach(pa => {
+        const img = new Image(); img.src = pa.logo; img.alt = pa.nom || '';
+        img.className = 'partlogo' + (pa.carte ? '' : ' silhouette');
+        if (pa.carte) { const c = el('div', 'partcarte', rang); c.appendChild(img); } else rang.appendChild(img);
+      });
+      p.tb = { spans: [] }; p.w = 600;
+    } else {
+      p.tb = bloc(p.haut, 'titre', p.lignes);
+      p.tb.style.paddingBottom = '.07em';
+      ajuste(p.tb, ZW, p.max);
+      p.tb.style.setProperty('--sw', p.tension ? '6px' : '4px');
+      p.w = largeur(p.tb);
+    }
+    p.bas = masque(r, X, LY + 12, ZW + 200, 120, false);
+    p.ss = el('div', 'sous', p.bas, esc(p.sous)); p.ss.style.paddingTop = '22px';
+    p.haut.style.transform = 'translateY(105%)';
+    p.bas.style.transform = 'translateY(-105%)';
+    p.tb.spans.forEach(s => lettreChauffe(s, p.allume || p.tension ? 0 : 1));
+  });
+  const filA = new Fil(r, false, 5), filB = new Fil(r, false, 5);
+  // carte QR
+  const qr = el('div', 'carteqr', r, `${qrSVG(D.luma, 14)}<div class="appel">SCANNE · INSCRIS-TOI</div><div class="url">${esc(D.lumaCourt)}</div>`);
+  qr.style.right = px(M); qr.style.bottom = px(H - LY - 2);
+
+  const P = Math.max(5, +D.dureePlan || 8), N = plans.length, CYCLE = P * N;
+  const montee = 1.25, descente = 1.0;
+  let derniereMinute = null;
+  E.plans = plans; E.P = P;
+  E.frame = t => {
+    const tc = ((t % CYCLE) + CYCLE) % CYCLE;
+    const k = Math.floor(tc / P), u = tc - k * P;
+    const p = plans[k], q = plans[(k - 1 + N) % N];
+    // texte qui sort du filament / y retourne
+    plans.forEach((pl, j) => {
+      let y;
+      if (j === k) {
+        const inn = expoOut(seg(u, .15, .15 + montee)), out = easeIn(seg(u, P - descente, P - .05));
+        y = (1 - inn) * 105 + out * 105;
+        pl.haut.style.transform = `translateY(${y.toFixed(2)}%)`;
+        pl.bas.style.transform = `translateY(${(-y).toFixed(2)}%)`;
+        pl.haut.parentNode.style.visibility = pl.bas.parentNode.style.visibility = 'visible';
+      } else {
+        pl.haut.parentNode.style.visibility = pl.bas.parentNode.style.visibility = 'hidden';
+      }
+    });
+    // lettres : allumage du nom, tension
+    if (p.allume) p.tb.spans.forEach((s, i) => lettreChauffe(s, seg(u, .9 + i * .055, 2.2 + i * .055)));
+    if (p.tension) p.tb.spans.forEach((s, i) => {
+      const b = bruit(t * 1.6 + i * 3.1), surge = Math.pow(Math.max(0, Math.sin(t * 1.9 + i * .15)), 14);
+      lettreChauffe(s, .03 + .12 * b + .14 * surge);
+    });
+    if (p.horaire && D.compteARebours) {
+      const m = minutesAvant(D.horaires.ouverture);
+      if (m !== derniereMinute) {
+        derniereMinute = m;
+        p.ss.textContent = m === null ? 'Prends place.' : m > 1 ? `Prends place : on commence dans ${m} minutes.` : m === 1 ? 'Prends place : on commence dans une minute.' : 'Prends place : on commence dans un instant.';
+      }
+    }
+    // le filament : longueur et chaleur glissent d'un plan à l'autre
+    const tr = smooth(seg(u, 0, 1.1));
+    const w0 = q.tension ? q.w : q.w, w1 = p.w;
+    const breath = .035 * Math.sin(t * 1.15) + .03 * (bruit(t * .8) - .5);
+    let h = lerp(q.h, p.h, tr) + breath;
+    let L = lerp(w0, w1, tr);
+    const sortie = seg(u, P - descente, P - .05), entree = seg(u, .05, .9);
+    const intensite = .55 + .45 * Math.min(smooth(entree), 1 - .6 * smooth(sortie));
+    h *= intensite;
+    if (p.allume) h = lerp(h, .9 + .03 * Math.sin(t * 2), smooth(seg(u, .9, 2.0)) * (1 - sortie));
+    const split = p.tension && p.tension > 1 ? smooth(seg(u, .3, 1.2)) * (1 - smooth(sortie)) : 0;
+    if (split > 0) {
+      const gap = 48 * split, L2 = (L - gap) / 2;
+      const f1 = .22 + .14 * bruit(t * 2.3) + .1 * Math.pow(Math.max(0, Math.sin(t * 1.9)), 14);
+      const f2 = .22 + .14 * bruit(t * 2.3 + 17) + .1 * Math.pow(Math.max(0, Math.sin(t * 1.9 + .8)), 14);
+      filA.pose(X, LY, L2).chauffe(lerp(h, f1, split));
+      filB.pose(X + L2 + gap, LY, L2).chauffe(lerp(h, f2, split), split);
+    } else {
+      filA.pose(X, LY, L).chauffe(h);
+      filB.chauffe(0, 0);
+    }
+  };
+  E.fin = P * .55;
+  return E;
+}
+function minutesAvant(hhmm) {
+  const m = /^(\d{1,2}):(\d{2})$/.exec(String(hhmm || '').trim()); if (!m) return null;
+  let now = new Date();
+  if (params.get('heure')) { const f = /^(\d{1,2}):(\d{2})$/.exec(params.get('heure')); if (f) { now = new Date(); now.setHours(+f[1], +f[2], 0, 0); } }
+  const cible = new Date(now); cible.setHours(+m[1], +m[2], 0, 0);
+  const diff = Math.ceil((cible - now) / 60000);
+  if (diff > 59 || diff < -20) return null;   // trop tôt, ou bien après l'heure : pas de compte à rebours
+  return Math.max(0, diff);
+}
+
+/* ── 2 · OUVERTURE ─ mise sous tension, l'ampoule s'allume ─────────────── */
+function construireOuverture() {
+  const E = ecran('ouverture', 'Ouverture · mise sous tension', { fondu: .01, retard: 0, fin: 11.4, heure: D.horaires && D.horaires.ouverture });
+  const r = E.root;
+  const mst = el('div', 'sur abs', r, 'MISE SOUS TENSION');
+  Object.assign(mst.style, { left: '0', right: '0', textAlign: 'center', top: '448px', fontSize: '36px', letterSpacing: '.42em', textIndent: '.42em', opacity: 0 });
+  const filC = new Fil(r, false, 5);
+  // logo : posé à sa place finale, transformé pour l'ident
+  const S = 432, LX = W - M - S, LY0 = 268;
+  const logo = logoG(r, S); Object.assign(logo.style, { left: px(LX), top: px(LY0) });
+  const cr1 = el('div', 'sur abs', r, 'GENIUS N7 PRÉSENTE'), cr2 = el('div', 'sur abs', r, 'AVEC AIn7');
+  [cr1, cr2].forEach((c, i) => Object.assign(c.style, { left: 0, right: 0, textAlign: 'center', top: px(790 + i * 70), color: 'var(--creme)', fontSize: i ? '32px' : '40px', letterSpacing: '.42em', textIndent: '.42em', opacity: 0 }));
+  // titre final
+  const LYT = 700;
+  const haut = masque(r, M, 0, 1240, LYT - 14, true);
+  const sw = el('div', 'sur', haut, esc(D.evenement.surtitre)); sw.style.marginBottom = '34px';
+  const tb = bloc(haut, 'titre', D.evenement.titre.map(caps)); tb.style.paddingBottom = '.07em';
+  ajuste(tb, LX - M - 90, 148);
+  const tw = largeur(tb);
+  const bas = masque(r, M, LYT + 12, 1240, 120, false);
+  const ss = el('div', 'sous', bas, esc(`${D.evenement.date} · ${D.evenement.lieu}`)); ss.style.paddingTop = '22px';
+  const filT = new Fil(r, false, 5);
+  const pd = pied(r);
+  tb.spans.forEach(s => lettreChauffe(s, 0, 0));
+  E.frame = t0 => {
+    const t = t0 - .8;   // la salle passe d'abord au noir
+    // 1. le filament seul, en braise, puis il chauffe
+    const apparait = smooth(seg(t, .2, 1.2));
+    const chauffe = easeIn(seg(t, 1.1, 3.0));
+    const frappe = expoOut(seg(t, 2.95, 3.35));
+    const refroidit = smooth(seg(t, 3.3, 4.6));
+    const lc = lerp(150, 230, chauffe), L = lerp(lc, W + 400, frappe);
+    filC.pose(W / 2 - L / 2, 562, L).chauffe(lerp(.3 + .04 * Math.sin(t * 5), 1, chauffe), apparait * (1 - refroidit));
+    mst.style.opacity = (smooth(seg(t, .6, 1.5)) * (1 - smooth(seg(t, 2.85, 3.15)))).toFixed(3);
+    mst.style.color = rgba(chaleur(lerp(.62, .95, chauffe)), 1);
+    // 2. surtension : l'éclair
+    eclair(.62 * Math.max(0, 1 - Math.abs(t - 3.12) / .22) + .5 * Math.exp(-Math.max(0, t - 3.2) * 2.6) * (t > 3.12 ? 1 : 0), W / 2, 562);
+    // 3. l'ampoule G sort de l'éclair, se refroidit en blanc, le carré or se pose
+    const g = seg(t, 3.0, 3.5), gc = smooth(seg(t, 3.3, 5.2));
+    const glyHeat = lerp(1, .9, gc);
+    const c = chaleur(glyHeat);
+    logo.plein.setAttribute('fill', rgba(lerp(0, 1, gc) > .99 ? [255, 255, 255] : c, 1));
+    const glow = lerp(1, .18, smooth(seg(t, 3.4, 6.2)));
+    logo.svg.style.filter = glow > .01 ? `drop-shadow(0 0 ${px(14 * glow + 4)} ${rgba(chaleur(.9), .9 * glow)}) drop-shadow(0 0 ${px(60 * glow + 10)} ${rgba(chaleur(.75), .7 * glow)})` : 'none';
+    logo.svg.style.opacity = smooth(g).toFixed(3);
+    logo.carre.style.opacity = smooth(seg(t, 4.3, 5.4)).toFixed(3);
+    // position : centre → place définitive
+    const dep = easeInOut(seg(t, 7.0, 8.6));
+    const cx0 = W / 2 - (LX + S / 2), cy0 = 480 - (LY0 + S / 2);
+    const sc = lerp(.96, 1, dep);
+    logo.style.transform = `translate(${px(cx0 * (1 - dep))},${px(cy0 * (1 - dep))}) scale(${sc.toFixed(4)})`;
+    logo.style.boxShadow = `0 0 ${px(120)} ${rgba([232, 170, 96], .16 * smooth(seg(t, 4.6, 6)))}`;
+    // 4. génériques d'ouverture
+    const c1 = smooth(seg(t, 4.8, 5.6)) * (1 - smooth(seg(t, 6.7, 7.2)));
+    const c2 = smooth(seg(t, 5.3, 6.1)) * (1 - smooth(seg(t, 6.7, 7.2)));
+    cr1.style.opacity = c1.toFixed(3); cr2.style.opacity = c2.toFixed(3);
+    // 5. le titre s'allume lettre à lettre
+    sw.style.opacity = smooth(seg(t, 7.6, 8.3)).toFixed(3);
+    tb.spans.forEach((s, i) => lettreChauffe(s, seg(t, 7.9 + i * .07, 9.3 + i * .07), smooth(seg(t, 7.7 + i * .07, 8.1 + i * .07))));
+    const fl = expoOut(seg(t, 8.5, 9.4));
+    filT.pose(M, LYT, tw * fl).chauffe(lerp(1, .74, smooth(seg(t, 9.0, 10))) + .02 * Math.sin(t * 1.3), fl > 0 ? 1 : 0);
+    const sb = expoOut(seg(t, 9.3, 10.4));
+    bas.style.transform = `translateY(${((1 - sb) * -105).toFixed(2)}%)`;
+    pd.style.opacity = smooth(seg(t, 9.6, 10.6)).toFixed(3);
+  };
+  return E;
+}
+
+/* ── 3 · LE TABLEAU DES TROIS ACTES (programme, mercis, clôture) ───────── */
+function construireTableau(id, nom, o) {
+  const E = ecran(id, nom, { fin: o.fin || 5, heure: o.heure });
+  const r = E.root;
+  pied(r);
+  // en-tête du tableau
+  const haut = masque(r, M, 0, 1700, 352, true);
+  const sw = el('div', 'sur', haut, esc(o.sur)); sw.style.marginBottom = '26px';
+  const tb = bloc(haut, 'titre', o.lignes); tb.style.paddingBottom = '.05em';
+  ajuste(tb, 1500, o.tailleTitre || 92);
+  tb.spans.forEach(s => lettreChauffe(s, 1));
+  haut.style.transform = 'translateY(105%)';
+  // colonnes
+  const COLX = [M, M + 600, M + 1200], TY = 418, TH = 292, BASE = 742;
+  const cols = [0, 1, 2].map(i => {
+    const c = { i };
+    c.tubes = Array.from({ length: i + 1 }, (_, j) => new Fil(r, true, 12).pose(COLX[i] + 6 + j * 54, TY, TH));
+    c.base = new Fil(r, false, 4).pose(COLX[i], BASE, 440);
+    c.allume = o.allumes[i];
+    c.suivant = o.suivant === i;
+    const passe = o.passes && o.passes[i];
+    const nm = nomDe(i);
+    c.etiq = el('div', 'etiquette abs', r, `ACTE ${ROM[i]}${c.suivant ? ' <span style="color:var(--creme);opacity:.85">· À SUIVRE</span>' : ''}`);
+    Object.assign(c.etiq.style, { left: px(COLX[i]), top: px(BASE + 32) });
+    let lignes, eteint = false;
+    if (c.allume && nm) lignes = nomLignes(nm);
+    else if (c.allume && passe) lignes = [ORD[i], 'HISTOIRE'];
+    else { lignes = ['SOUS', 'TENSION']; eteint = true; c.allume = false; }
+    c.eteint = eteint;
+    c.nom = bloc(r, 'nomcol abs', lignes);
+    Object.assign(c.nom.style, { left: px(COLX[i]), top: px(BASE + 82) });
+    ajuste(c.nom, 470, 62);
+    c.nom.style.webkitTextStrokeWidth = eteint ? '3.2px' : '2.4px';
+    c.nom.spans.forEach(s => lettreChauffe(s, 0));
+    return c;
+  });
+  const ordre = cols.filter(c => c.allume).map(c => c.i);
+  const debut = i => .9 + ordre.indexOf(i) * (o.cascade || .55);
+  E.frame = t => {
+    const m = expoOut(seg(t, .1, 1.3));
+    haut.style.transform = `translateY(${((1 - m) * 105).toFixed(2)}%)`;
+    cols.forEach(c => {
+      const tv = Math.min(1, smooth(seg(t, .2, 1.0)));
+      if (c.allume) {
+        const d = debut(c.i);
+        const mont = easeIn(seg(t, d, d + .7)), red = smooth(seg(t, d + .7, d + 1.8));
+        const h = lerp(.16, 1, mont) - (1 - .84) * red + .015 * Math.sin(t * 1.4 + c.i);
+        c.tubes.forEach((tu, j) => tu.chauffe(h - .06 * (1 - seg(t, d + j * .12, d + .5 + j * .12)), tv));
+        c.base.chauffe(lerp(.14, .74, smooth(seg(t, d + .3, d + 1.2))) + .015 * Math.sin(t * 1.1 + c.i * 2), tv);
+        c.nom.spans.forEach((s, k) => lettreChauffe(s, seg(t, d + .35 + k * .05, d + 1.6 + k * .05), tv));
+      } else {
+        const fort = c.suivant ? 1 : 0;
+        c.tubes.forEach((tu, j) => {
+          const b = bruit(t * (1.4 + fort * 1.6) + c.i * 7 + j * 3.3);
+          const surge = Math.pow(Math.max(0, Math.sin(t * (1.7 + fort) + j * .7 + c.i)), 12);
+          tu.chauffe(.12 + .1 * b + (.12 + .18 * fort) * surge, tv);
+        });
+        c.base.chauffe(.14 + .06 * bruit(t * 1.3 + c.i * 5) + (fort ? .1 * Math.pow(Math.max(0, Math.sin(t * 2.7)), 10) : 0), tv);
+        c.nom.spans.forEach((s, k) => lettreChauffe(s, .02 + .1 * bruit(t * 1.5 + k * 2.7 + c.i * 9) + (c.suivant ? .12 * Math.pow(Math.max(0, Math.sin(t * 2.7 + k * .1)), 10) : 0), tv));
+      }
+      c.etiq.style.opacity = (tv * (c.allume ? 1 : .7)).toFixed(3);
+    });
+    if (o.final && ordre.length) {
+      const dl = debut(ordre[ordre.length - 1]) + .6;
+      eclair(.34 * Math.exp(-Math.max(0, t - dl) * 2.4) * (t > dl ? 1 : 0) * smooth(seg(t, dl - .1, dl)));
+    }
+  };
+  return E;
+}
+
+/* ── 4 · ENTRÉE D'UN ACTE ─ les tubes I, II, III et le nom s'allument ───── */
+function construireActe(i) {
+  const g = D.guests[i] || {};
+  const nm = nomDe(i);
+  const revele = !!nm && !g.surprise;
+  const E = ecran(`acte-${i + 1}`, `Entrée acte ${ROM[i]}${nm ? ' · ' + nm : ''}`, { fin: revele ? 4.2 : 6.2, heure: D.horaires && D.horaires['acte' + (i + 1)] });
+  const r = E.root;
+  pied(r);
+  const LY = 790, ZW = 1190;
+  const haut = masque(r, M, 0, ZW + 200, LY - 14, true);
+  const sw = el('div', 'sur', haut, `ACTE ${ROM[i]}`); Object.assign(sw.style, { marginBottom: '36px', fontSize: '36px' });
+  const pile = el('div', '', haut); pile.style.position = 'relative';
+  const lignes = nm ? nomLignes(nm) : [ORD[i], 'HISTOIRE'];
+  const tb = bloc(pile, 'titre', lignes); tb.style.paddingBottom = '.07em';
+  ajuste(tb, ZW, 212);
+  tb.style.setProperty('--sw', '5px');
+  let st = null;
+  if (!revele) {
+    st = bloc(pile, 'titre', ['SOUS', 'TENSION']); Object.assign(st.style, { position: 'absolute', left: 0, bottom: 0, paddingBottom: '.07em' });
+    ajuste(st, ZW, 212); st.style.setProperty('--sw', '6px');
+  }
+  const tw = largeur(tb);
+  const bas = masque(r, M, LY + 12, ZW + 200, 130, false);
+  const ss = el('div', 'sous', bas, esc(g.ligne || '')); ss.style.paddingTop = '24px';
+  const fil = new Fil(r, false, 5);
+  // tubes : le chiffre romain de l'acte, en lumière
+  const n = i + 1, ecart = 74, cx = 1612;
+  const tubes = Array.from({ length: n }, (_, j) => new Fil(r, true, 14).pose(cx + (j - (n - 1) / 2) * ecart - 7, 150, 790));
+  tb.spans.forEach(s => lettreChauffe(s, 0, 0));
+  if (st) st.spans.forEach(s => lettreChauffe(s, 0, 0));
+  const T0 = revele ? 1.0 : 3.5;          // instant de l'allumage
+  E.frame = t => {
+    const vis = smooth(seg(t, .1, .8));
+    sw.style.opacity = smooth(seg(t, .2, .9)).toFixed(3);
+    haut.style.transform = 'translateY(0)';
+    if (st) {
+      const fuite = smooth(seg(t, T0 - .05, T0 + .2));
+      st.spans.forEach((s, k) => {
+        const tension = seg(t, .3, T0);
+        const b = bruit(t * (1.5 + 3 * tension) + k * 2.9);
+        const surge = Math.pow(Math.max(0, Math.sin(t * (2 + 3 * tension) + k * .2)), 10);
+        let p = .03 + .12 * b + (.1 + .2 * tension) * surge;
+        p = lerp(p, .58, smooth(seg(t, T0 - .15, T0 + .05)));
+        lettreChauffe(s, p, vis * (1 - fuite));
+      });
+    }
+    // le nom
+    tb.spans.forEach((s, k) => {
+      const d = T0 + .35 + k * .055;
+      const a = revele ? smooth(seg(t, .5, 1.0)) : smooth(seg(t, T0 + .22, T0 + .5 + k * .02));
+      lettreChauffe(s, seg(t, d, d + 1.3), a);
+    });
+    // les tubes
+    tubes.forEach((tu, j) => {
+      const d = T0 - .1 + j * .16;
+      let h;
+      if (t < d) {
+        const tension = revele ? .2 : seg(t, .3, T0);
+        const b = bruit(t * (1.4 + 3 * tension) + j * 5.1);
+        const surge = Math.pow(Math.max(0, Math.sin(t * (2.1 + 2.5 * tension) + j)), 12);
+        h = .12 + .1 * b + (.08 + .24 * tension) * surge;
+      } else {
+        const mont = easeIn(seg(t, d, d + .55)), red = smooth(seg(t, d + .55, d + 1.9));
+        h = lerp(.2, 1, mont) - .14 * red + .012 * Math.sin(t * 1.3 + j);
+      }
+      tu.chauffe(h, vis);
+    });
+    if (!revele) eclair(.42 * Math.exp(-Math.max(0, t - T0 - .2) * 2.2) * smooth(seg(t, T0, T0 + .2)), M + tw / 2, 560);
+    const fl = expoOut(seg(t, T0 + 1.0, T0 + 1.8));
+    fil.pose(M, LY, tw * fl).chauffe(lerp(1, .74, smooth(seg(t, T0 + 1.5, T0 + 2.6))) + .015 * Math.sin(t * 1.2), fl > 0 ? 1 : 0);
+    const sb = expoOut(seg(t, T0 + 1.7, T0 + 2.7));
+    bas.style.transform = `translateY(${((1 - sb) * -105).toFixed(2)}%)`;
+  };
+  return E;
+}
+
+/* ── 5 · FOND D'UN GUEST ─ l'image de Tristan, ou un fond sobre ────────── */
+function construireFond(i) {
+  const g = D.guests[i] || {};
+  const nm = nomDe(i);
+  const E = ecran(`fond-${i + 1}`, `Fond acte ${ROM[i]} (pendant l'intervention)`, { fin: 1.5, fondu: 1.4, retard: .2 });
+  const r = E.root;
+  const repli = el('div', '', r); Object.assign(repli.style, { position: 'absolute', inset: 0 });
+  const n = i + 1, ecart = 74, cx = 1612;
+  const tubes = Array.from({ length: n }, (_, j) => new Fil(repli, true, 6, false).pose(cx + (j - (n - 1) / 2) * ecart - 3, 150, 790));
+  const sig = el('div', 'signature abs', repli, `ACTE ${ROM[i]}${nm ? ' · ' + esc(caps(nm)) : ''}`); Object.assign(sig.style, { left: px(M), top: '1010px' });
+  const sigFil = new Fil(repli, false, 3).pose(M, 990, 96);
+  const img = el('img', 'fondimg', r); img.alt = '';
+  E.image = null;
+  const base = String(g.fond || '').trim();
+  const essais = [];
+  if (base) { essais.push(base); const m = base.match(/^(.*)\.(jpe?g|png|webp)$/i); if (m) ['jpg', 'jpeg', 'png', 'webp'].forEach(x => { const c = `${m[1]}.${x}`; if (!essais.includes(c)) essais.push(c); }); }
+  const essai = k => {
+    if (k >= essais.length) { E.manque = base || '(aucun fichier indiqué)'; return; }
+    img.onload = () => { img.style.display = 'block'; repli.style.display = 'none'; E.image = essais[k]; E.manque = null; majRegie(); };
+    img.onerror = () => essai(k + 1);
+    img.src = essais[k];
+  };
+  E.manque = base || '(aucun fichier indiqué)';
+  essai(0);
+  E.frame = t => {
+    if (E.image) return;
+    const v = smooth(seg(t, 0, 1.2));
+    tubes.forEach((tu, j) => tu.chauffe(.5 + .012 * Math.sin(t * .6 + j), .4 * v));
+    sigFil.chauffe(.7, v);
+  };
+  return E;
+}
+
+/* ── 6 · GÉNÉRIQUE ─ les remerciements défilent, puis MERCI ────────────── */
+function construireGenerique() {
+  const E = ecran('generique', 'Remerciements (générique)', {});
+  const r = E.root;
+  const def = el('div', 'defile', r);
+  const lignes = [];
+  D.guests.forEach((g, i) => lignes.push([`Acte ${ROM[i]}`, nomDe(i) || `${ORD[i].charAt(0)}${ORD[i].slice(1).toLowerCase()} histoire`]));
+  const gen = (D.generique || []).filter(l => l && l[0]);
+  const parts = (D.partenaires || []).filter(p => p && p.logo);
+  // les logos des partenaires s'insèrent juste avant la dernière ligne du générique
+  gen.forEach((l, k) => { if (k === gen.length - 1 && parts.length) lignes.push(['Partenaires', null]); lignes.push(l); });
+  if (!gen.length && parts.length) lignes.push(['Partenaires', null]);
+  lignes.forEach(([role, qui]) => {
+    const c = el('div', 'cr', def, `<span class="role">${esc(caps(role))}</span>`);
+    if (qui === null) {
+      const lg = el('div', 'logos', c);
+      parts.forEach(pa => {
+        const img = new Image(); img.onload = () => E.mesure && E.mesure(); img.src = pa.logo; img.alt = pa.nom || '';
+        img.className = 'partlogo' + (pa.carte ? '' : ' silhouette');
+        if (pa.carte) { const cc = el('span', 'partcarte', lg); cc.appendChild(img); } else lg.appendChild(img);
+      });
+    } else if (String(qui).trim()) {
+      const q = el('span', 'qui', c, esc(qui));
+      const w = q.offsetWidth; if (w > W - 2 * M) q.style.fontSize = Math.floor(76 * (W - 2 * M) / w) + 'px';
+    }
+  });
+  // la fin : l'ampoule, allumée, et MERCI
+  const finEl = el('div', '', r); Object.assign(finEl.style, { position: 'absolute', inset: 0, opacity: 0 });
+  const S = 300;
+  const logo = logoG(finEl, S); Object.assign(logo.style, { left: px(W / 2 - S / 2), top: '230px' });
+  logo.svg.style.filter = `drop-shadow(0 0 10px ${rgba(chaleur(.9), .5)})`;
+  logo.style.boxShadow = '0 0 120px rgba(232,170,96,.18)';
+  const merci = bloc(finEl, 'titre abs', ['MERCI.']); Object.assign(merci.style, { left: 0, right: 0, top: '600px', textAlign: 'center' });
+  merci.style.fontSize = '150px'; merci.querySelector('.ligne').style.margin = '0 auto';
+  merci.spans.forEach(s => lettreChauffe(s, 1));
+  const sig = el('div', 'sur abs', finEl, `GENIUS N7 · AIn7 · ${esc(D.evenement.dateCourte)}`); Object.assign(sig.style, { left: 0, right: 0, textAlign: 'center', top: '800px', fontSize: '26px', letterSpacing: '.36em', textIndent: '.36em' });
+  const VIT = 60;   // pixels par seconde
+  let hauteur = 0;
+  // t1 : la dernière ligne arrive dans le tiers haut de l'écran, le générique s'efface, MERCI s'allume
+  E.mesure = () => { hauteur = def.offsetHeight; E.t1 = (H + hauteur - 400) / VIT; E.fin = E.t1 + 2.8; };
+  E.mesure();
+  E.frame = t => {
+    if (!hauteur) E.mesure();
+    const t1 = E.t1;
+    def.style.transform = `translateY(${px(H - t * VIT)})`;
+    def.style.opacity = (1 - smooth(seg(t, t1, t1 + 1.2))).toFixed(3);
+    finEl.style.opacity = smooth(seg(t, t1 + .4, t1 + 1.8)).toFixed(3);
+    merci.spans.forEach((s, k) => lettreChauffe(s, lerp(.3, 1, seg(t, t1 + .5 + k * .08, t1 + 2.1 + k * .08))));
+  };
+  return E;
+}
+
+/* ── 7 · L'APÉRO ─ la conversation continue, que le courant passe ──────── */
+function construireApero() {
+  const E = ecran('apero', 'Envoi vers l’apéro (boucle)', { boucle: true, fin: 4, heure: D.horaires && D.horaires.apero });
+  const r = E.root;
+  pied(r);
+  const LY = 668, ZW = 1500;
+  const haut = masque(r, M, 0, ZW + 200, LY - 14, true);
+  const sw = el('div', 'sur', haut, 'BUFFET · RENCONTRES'); sw.style.marginBottom = '34px';
+  const tb = bloc(haut, 'titre', ['LA CONVERSATION', 'CONTINUE.']); tb.style.paddingBottom = '.07em';
+  ajuste(tb, 1240, 170);
+  tb.spans.forEach(s => lettreChauffe(s, 1));
+  const lieu = lieuApero();
+  const bas = masque(r, M, LY + 12, ZW + 200, 300, false);
+  const pl = el('div', 'titre', bas); pl.style.paddingTop = '34px';
+  pl.innerHTML = `<span class="ligne" style="color:var(--or)">${esc(caps(lieu.phrase))}</span>`;
+  ajuste(pl, 1480, 104);
+  if (D.apero.indication) { const ind = el('div', 'sous', bas, esc(D.apero.indication)); ind.style.paddingTop = '22px'; }
+  const signe = el('div', 'sur abs', r, 'QUE LE COURANT PASSE.'); Object.assign(signe.style, { left: px(M), top: '936px', fontSize: '26px', color: 'var(--cuivre)' });
+  // le fil devient flèche : le courant va vers la sortie
+  const X1 = M, X2 = W - M - 8;
+  const fil = new Fil(r, false, 5);
+  const pointeA = new Fil(r, false, 5), pointeB = new Fil(r, false, 5);
+  [pointeA, pointeB].forEach((p, k) => { p.e.style.transformOrigin = '100% 50%'; p.e.style.transform = `rotate(${k ? -36 : 36}deg)`; });
+  const etincelles = [0, 1, 2].map(() => { const e = el('div', 'abs', r); Object.assign(e.style, { width: '90px', height: '18px', borderRadius: '50%', background: 'radial-gradient(closest-side,rgba(255,250,236,1),rgba(254,221,116,.7) 40%,rgba(254,221,116,0))', top: px(LY - 7), mixBlendMode: 'screen', opacity: 0 }); return e; });
+  E.frame = t => {
+    const m = expoOut(seg(t, .1, 1.3));
+    haut.style.transform = `translateY(${((1 - m) * 105).toFixed(2)}%)`;
+    const fl = expoOut(seg(t, .8, 2.0));
+    const L = (X2 - X1) * fl;
+    const h = .74 + .02 * Math.sin(t * 1.2);
+    fil.pose(X1, LY, L).chauffe(h, fl > 0 ? 1 : 0);
+    const pa = smooth(seg(t, 1.7, 2.2));
+    pointeA.pose(X1 + L - 52, LY, 54).chauffe(h, pa); pointeB.pose(X1 + L - 52, LY, 54).chauffe(h, pa);
+    const sb = expoOut(seg(t, 1.5, 2.6));
+    bas.style.transform = `translateY(${((1 - sb) * -105).toFixed(2)}%)`;
+    signe.style.opacity = smooth(seg(t, 2.4, 3.4)).toFixed(3);
+    etincelles.forEach((e, k) => {
+      const per = 2.6, u = ((t - 2.2 - k * per / 3) % per + per) % per / per;
+      const x = X1 + (X2 - X1 - 40) * easeInOut(u);
+      e.style.transform = `translateX(${px(x - 45)})`;
+      e.style.opacity = t < 2.2 ? '0' : (Math.sin(Math.PI * u) * .95).toFixed(3);
+    });
+  };
+  return E;
+}
+
+/* ═════════════════════════ LE DÉROULÉ ═════════════════════════════════════ */
+function construire() {
+  construireAttente();
+  construireOuverture();
+  const rev = i => !!nomDe(i) && !(D.guests[i] || {}).surprise;
+  construireTableau('programme', 'Les trois actes (programme)', { sur: 'CE SOIR', lignes: ['TROIS HISTOIRES', 'QUI SE RÉPONDENT.'], allumes: [0, 1, 2].map(rev) });
+  for (let i = 0; i < 3; i++) {
+    construireActe(i);
+    construireFond(i);
+    if (i < 2) construireTableau(`merci-${i + 1}`, `Transition · merci acte ${ROM[i]}`, {
+      sur: `ACTE ${ROM[i]}`, lignes: ['MERCI.'], tailleTitre: 150,
+      allumes: [0, 1, 2].map(j => j <= i || rev(j)), passes: [0, 1, 2].map(j => j <= i), suivant: i + 1,
+    });
+  }
+  construireTableau('cloture', 'Clôture · trois histoires', { sur: 'CE SOIR', lignes: ['TROIS HISTOIRES', 'QUI SE RÉPONDENT.'], allumes: [true, true, true], passes: [true, true, true], final: true, cascade: .8, fin: 5.4, heure: D.horaires && D.horaires.cloture });
+  construireGenerique();
+  construireApero();
+}
+
+/* ═════════════════════════ MOTEUR ════════════════════════════════════════ */
+let idx = 0, tIn = 0, sortant = null, tSort = 0, fige = false, pauseT = null, rapide = false;
+const now = () => performance.now();
+function montrer(E, o) { E.root.style.visibility = 'visible'; E.root.style.opacity = o; }
+function cacher(E) { E.root.style.visibility = 'hidden'; E.root.style.opacity = 0; }
+function aller(i, mode = {}) {
+  i = Math.max(0, Math.min(ECRANS.length - 1, i | 0));
+  if (i === idx && !mode.force) return;
+  if (sortant && sortant !== ECRANS[i]) cacher(sortant);
+  sortant = (i !== idx) ? ECRANS[idx] : null; tSort = now();
+  if (sortant) sortant.tGel = tempsDe(sortant);
+  idx = i; rapide = !!mode.fige;
+  tIn = now() - (rapide ? ECRANS[i].fin * 1000 : 0);
+  montrer(ECRANS[i], 0);
+  if (ECRANS[i].mesure) ECRANS[i].mesure();
+  try { history.replaceState(null, '', '#' + ECRANS[i].id); } catch (e) { /* file:// sans historique */ }
+  majRegie();
+}
+function tempsDe(E) { return E === ECRANS[idx] ? (pauseT !== null ? pauseT : (now() - tIn) / 1000) : (E.tGel || 0); }
+const suivant = () => aller(idx + 1);
+const precedent = () => aller(idx - 1, { fige: true });
+
+function boucle() {
+  const E = ECRANS[idx];
+  const t = tempsDe(E);
+  eclairDemande = 0; eclairX = 960; eclairY = 540;
+  E.frame(t);
+  let o;
+  if (pauseT !== null) o = 1;
+  else if (rapide) o = smooth(seg((now() - tIn) / 1000 - E.fin, 0, .45));
+  else o = smooth(seg(t, E.retard, E.retard + E.fondu));
+  E.root.style.opacity = o.toFixed(3);
+  if (sortant) {
+    const ts = (now() - tSort) / 1000;
+    const dur = rapide ? .35 : (sortant.id === 'attente' ? 1.0 : .7);
+    const os = 1 - smooth(seg(ts, 0, dur));
+    if (os <= 0 || pauseT !== null) { cacher(sortant); sortant = null; }
+    else sortant.root.style.opacity = os.toFixed(3);
+  }
+  eclairEl.style.opacity = clamp(eclairDemande).toFixed(3);
+  const pos = `${eclairX | 0}px ${eclairY | 0}px`;
+  if (pos !== eclairPos) { eclairPos = pos; eclairEl.style.setProperty('--ec', pos); }
+  // sur l'image d'un guest : ni vignette ni grain, l'image reste telle quelle
+  let brut = E.image ? o : 0;
+  if (sortant && sortant.image) brut = Math.max(brut, parseFloat(sortant.root.style.opacity) || 0);
+  if (Math.abs(brut - dernierBrut) > .002) {
+    dernierBrut = brut;
+    vignetteEl.style.opacity = (1 - brut).toFixed(3);
+    grainEl.style.opacity = (.075 * (1 - brut)).toFixed(4);
+  }
+  requestAnimationFrame(boucle);
+}
+const vignetteEl = document.getElementById('vignette'), grainEl = document.getElementById('grain');
+let dernierBrut = -1;
+
+/* ── grain de pellicule ─────────────────────────────────────────────────── */
+function grain() {
+  const g = document.getElementById('grain');
+  if (!D.grain) { g.style.display = 'none'; return; }
+  const c = document.createElement('canvas'); c.width = c.height = 256;
+  const x = c.getContext('2d'), im = x.createImageData(256, 256);
+  let s = 1234567;
+  for (let k = 0; k < im.data.length; k += 4) { s = (s * 1103515245 + 12345) & 0x7fffffff; const v = (s >> 8) & 255; im.data[k] = im.data[k + 1] = im.data[k + 2] = v; im.data[k + 3] = 255; }
+  x.putImageData(im, 0, 0);
+  g.style.backgroundImage = `url(${c.toDataURL()})`;
+  if (CAPTURE) return;
+  setInterval(() => { g.style.transform = `translate(${(Math.random() * 200 - 100) | 0}px,${(Math.random() * 200 - 100) | 0}px)`; }, 83);
+}
+
+/* ── régie ─────────────────────────────────────────────────────────────── */
+const regie = document.getElementById('regie');
+function majRegie() {
+  if (regie.style.display !== 'block') return;
+  const alertes = [];
+  ECRANS.forEach(E => { if (E.manque) alertes.push(`Fond manquant : <b>${esc(E.manque)}</b> (fond sobre affiché)`); });
+  D.guests.forEach((g, i) => { if (!nomDe(i)) alertes.push(`Acte ${ROM[i]} : nom vide (« sous tension » puis « ${ORD[i].toLowerCase()} histoire »)`); });
+  alertes.push('Horaires à confirmer (objet SOIREE, en tête du fichier)');
+  regie.innerHTML = `<h3>RÉGIE · ÉCRAN ${idx + 1} / ${ECRANS.length}</h3>
+    <ol>${ECRANS.map((E, k) => `<li class="${k === idx ? 'actif' : ''}">${esc(E.nom)}${E.heure ? ` <span style="color:#9a9a9a">· ${esc(E.heure)}</span>` : ''}</li>`).join('')}</ol>
+    <div><kbd>→</kbd> <kbd>Espace</kbd> avancer · <kbd>←</kbd> reculer · <kbd>R</kbd> rejouer l'écran<br>
+    <kbd>B</kbd> noir · <kbd>F</kbd> plein écran · <kbd>H</kbd> fermer · <kbd>0</kbd>–<kbd>9</kbd> aller à l'écran (régie ouverte)</div>
+    <p class="alerte">${alertes.map(a => '• ' + a).join('<br>')}</p>`;
+}
+function basculeRegie() { regie.style.display = regie.style.display === 'block' ? 'none' : 'block'; majRegie(); }
+
+/* ── clavier ───────────────────────────────────────────────────────────── */
+let verrou = null;
+async function veille() { try { if (!verrou && navigator.wakeLock) verrou = await navigator.wakeLock.request('screen'); } catch (e) { /* pas grave */ } }
+addEventListener('keydown', e => {
+  if (e.ctrlKey || e.metaKey || e.altKey) return;
+  const k = e.key;
+  veille();
+  if (k === 'ArrowRight' || k === ' ' || k === 'PageDown' || k === 'ArrowDown' || k === 'Enter') { e.preventDefault(); suivant(); }
+  else if (k === 'ArrowLeft' || k === 'PageUp' || k === 'ArrowUp' || k === 'Backspace') { e.preventDefault(); precedent(); }
+  else if (k === 'Home') { e.preventDefault(); aller(0, { fige: true }); }
+  else if (k === 'End') { e.preventDefault(); aller(ECRANS.length - 1, { fige: true }); }
+  else if (k === 'r' || k === 'R') aller(idx, { force: true });
+  else if (k === 'b' || k === 'B' || k === '.') { const n = document.getElementById('noir'); n.style.opacity = n.style.opacity === '1' ? '0' : '1'; }
+  else if (k === 'f' || k === 'F') { if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen().catch(() => {}); }
+  else if (k === 'h' || k === 'H' || k === '?') basculeRegie();
+  else if (/^[0-9]$/.test(k) && regie.style.display === 'block') { const n = +k === 0 ? 9 : +k - 1; aller(n, { fige: true }); }
+});
+let minuteur = null;
+addEventListener('mousemove', () => { document.body.classList.remove('cache-souris'); clearTimeout(minuteur); minuteur = setTimeout(() => document.body.classList.add('cache-souris'), 1800); });
+
+/* ── mise à l'échelle (16:9 dans n'importe quelle fenêtre) ─────────────── */
+function echelle() {
+  const s = Math.min(innerWidth / W, innerHeight / H);
+  scene.style.transform = `translate(${px((innerWidth - W * s) / 2)},${px((innerHeight - H * s) / 2)}) scale(${s.toFixed(5)})`;
+}
+addEventListener('resize', echelle);
+// adresse modifiée à la main (…/index.html#acte-2) : on y va
+addEventListener('hashchange', () => { const k = ECRANS.findIndex(E => E.id === decodeURIComponent(location.hash.slice(1))); if (k >= 0 && k !== idx) aller(k, { fige: true }); });
+
+/* ── démarrage ─────────────────────────────────────────────────────────── */
+function demarrer() {
+  echelle();
+  try { construire(); }
+  catch (e) { panne(`Erreur pendant la préparation des écrans : ${e && e.message}. Vérifier la dernière modification du bloc SOIREE, en haut de index.html.`); throw e; }
+  grain();
+  const h = decodeURIComponent((location.hash || '').slice(1));
+  const k = ECRANS.findIndex(E => E.id === h);
+  idx = -1;
+  if (k > 0) { idx = 0; aller(k, { fige: true }); }
+  else { idx = 0; montrer(ECRANS[0], 0); tIn = now(); }
+  window.REGIE = {
+    ecrans: ECRANS.map(E => E.id), aller: (i, f) => aller(i, { fige: !!f, force: true }),
+    seek: t => { pauseT = t; }, reprendre: () => { pauseT = null; }, courant: () => idx,
+    infos: () => ECRANS.map(E => ({ id: E.id, fin: E.fin, manque: E.manque || null })),
+  };
+  requestAnimationFrame(boucle);
+}
+(document.fonts && document.fonts.load ? Promise.all([document.fonts.load('800 100px Inter'), document.fonts.load('500 40px Inter'), document.fonts.load('700 30px Inter')]).catch(() => {}) : Promise.resolve())
+  .then(() => document.fonts ? document.fonts.ready : null).then(demarrer, demarrer);
+})();
+</script>
+</body>
+</html>

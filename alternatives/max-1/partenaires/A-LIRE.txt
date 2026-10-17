@@ -1,0 +1,9 @@
+Déposer ici les logos des partenaires, puis les déclarer dans le bloc SOIREE en haut de index.html :
+
+  partenaires: [
+    { nom: "Nom du partenaire", logo: "partenaires/nom.png", carte: false },
+  ],
+
+PNG à fond transparent : le logo est redessiné en couleur crème (carte: false).
+Logo sur fond blanc (JPG) : mettre carte: true, il est posé tel quel sur une carte crème.
+Tant que la liste est vide, aucun partenaire n'apparaît à l'écran.

@@ -1,0 +1,691 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Genius N7 · Écran de la soirée</title>
+
+<script>
+/* =====================================================================
+   DONNÉES DE LA SOIRÉE — tout ce qui peut changer est ici, et seulement ici.
+   Modifier les textes entre guillemets, enregistrer, recharger la page (F5).
+   ===================================================================== */
+window.SOIREE = {
+
+  date:      "Jeudi 26 novembre 2026",
+  dateCourte:"26.11.2026",
+  salle:     "Amphi B00",
+  ecole:     "ENSEEIHT",
+  ville:     "Toulouse",
+
+  /* Horaires. Les sources ne concordent pas encore (plaquette / briefing / Luma) :
+     valeurs par défaut = minutage du briefing guest (p. 8), à confirmer par Tristan.
+     Seule "ouverture" est affichée : l'écran d'attente compte jusqu'à elle. */
+  horaires: {
+    accueil:    "18:15",
+    ouverture:  "18:45",
+    acte1:      "18:55",
+    acte2:      "19:20",
+    acte3:      "19:45",
+    cloture:    "20:10",
+    networking: "20:20"
+  },
+
+  /* Les trois guests, dans l'ordre de passage.
+     nom vide ""  = nom sous scellé (une barre dorée le remplace partout).
+     fond         = image plein écran pendant l'intervention, à déposer dans le dossier fonds/
+                    (extension libre : .jpg, .jpeg, .png ou .webp). */
+  guests: [
+    { nom: "Tristan Vincent", ligne: "Créateur de contenu · plus de 600 000 abonnés", fond: "fonds/acte-1" },
+    { nom: "Thibaut Lucas", ligne: "Ingénieur ENSEEIHT · cofondateur et CEO de Picsellia", fond: "fonds/acte-2" },
+    { nom: "Sébastien Bonnet", ligne: "Entrepreneur · MonOrdo, Urry, Dropp", fond: "fonds/acte-3" }
+  ],
+
+  /* false : sur l'écran d'attente, les actes II et III restent scellés même si leur nom est rempli
+             (le nom s'ouvre à l'entrée en scène).  true : on les affiche dès l'attente. */
+  devoilerPendantAttente: true,
+
+  /* Lieu de l'apéro / networking : "melee" ou "foyer".
+     Pendant la soirée, la touche L bascule aussi de l'un à l'autre. */
+  apero: "melee",
+  lieuxApero: {
+    melee: { nom: "La Mêlée",            precision: "" },
+    foyer: { nom: "Foyer des étudiants", precision: "à l’ENSEEIHT" }
+  },
+  aperoSousTitre: "Buffet · rencontres",
+
+  /* Générique de fin : [rôle, nom]. */
+  equipe: [
+    ["Une soirée", "Genius N7"],
+    ["Avec",       "AIn7"],
+    ["Image",      "TVN7"],
+    ["Lumière",    "CAN7"],
+    ["Lieu",       "ENSEEIHT · Amphi B00"]
+  ],
+
+  /* Partenaires : un emplacement par ligne. logo = chemin d'une image déposée dans le dossier
+     (ex. "partenaires/logo-1.png"). Tant que logo est vide, l'emplacement reste marqué. */
+  partenaires: [
+    { nom: "", logo: "" },
+    { nom: "", logo: "" },
+    { nom: "", logo: "" },
+    { nom: "", logo: "" }
+  ],
+
+  /* Lien de l'écran d'attente (le QR code est l'image assets/qr-luma.svg). */
+  lumaTexte: "luma.com/msnjs8ts",
+
+  /* Durée d'un plan de l'écran d'attente, en secondes. */
+  dureePlanAttente: 10
+};
+</script>
+
+<link rel="stylesheet" href="assets/polices.css">
+<style>
+:root{
+  --noir:#0B0B0B;
+  --charbon:#141414;
+  --creme:#F4F0E7;
+  --or:#D3B25B;
+  --or-clair:#FFD877;
+  --brique:#C8874E;
+  --or-sombre:#6F5E2A;
+  --gris:rgba(244,240,231,.62);
+  --ease:cubic-bezier(.65,0,.2,1);
+  --out:cubic-bezier(.16,.84,.24,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:#000;overflow:hidden}
+body{font-family:'Inter',Arial,sans-serif;font-feature-settings:'cv08' 1;color:var(--creme);-webkit-font-smoothing:antialiased;font-optical-sizing:auto;cursor:none}
+body.souris{cursor:default}
+
+#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:var(--noir)}
+
+/* ---------- fonds de scène ---------- */
+#fond{position:absolute;inset:0;background:var(--noir);transition:background-color 1s var(--ease)}
+#fond.creme{background:var(--creme)}
+#fond.nuit{background:#060504}
+#spot{position:absolute;inset:0;pointer-events:none;transition:opacity 1.4s var(--ease);
+  background:
+   radial-gradient(1100px 760px at 22% -8%, rgba(211,178,91,.16), transparent 70%),
+   radial-gradient(900px 500px at 85% 0%, rgba(200,135,78,.07), transparent 70%)}
+#rampe{position:absolute;left:0;right:0;bottom:0;height:300px;pointer-events:none;transition:opacity 1.4s var(--ease);
+  background:linear-gradient(to top, rgba(200,135,78,.16), rgba(200,135,78,.05) 45%, transparent)}
+#vignette{position:absolute;inset:0;pointer-events:none;transition:opacity 1.2s;
+  background:radial-gradient(ellipse 75% 75% at 50% 42%, transparent 55%, rgba(0,0,0,.55) 100%)}
+#grain{position:absolute;inset:-60px;pointer-events:none;opacity:.07;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1.2 0'/></filter><rect width='240' height='240' filter='url(%23n)'/></svg>");
+  animation:grain 1s steps(6) infinite}
+@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-22px,14px)}40%{transform:translate(18px,-26px)}60%{transform:translate(-30px,-8px)}80%{transform:translate(26px,22px)}100%{transform:translate(0,0)}}
+body.creme #grain{mix-blend-mode:multiply;opacity:.06}
+
+/* ---------- scènes ---------- */
+.scene{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .6s var(--ease),visibility 0s .6s}
+.scene.on{opacity:1;visibility:visible;transition:opacity .9s var(--ease) .25s,visibility 0s}
+.r{opacity:0;transform:translateY(26px);filter:blur(8px);
+   transition:opacity .45s var(--ease),transform .45s var(--ease),filter .45s var(--ease)}
+.on .r, .plan.cur .r{opacity:1;transform:none;filter:none;
+   transition:opacity 1.3s var(--out) calc(var(--d,0)*1ms + 450ms),transform 1.6s var(--out) calc(var(--d,0)*1ms + 450ms),filter 1.3s var(--out) calc(var(--d,0)*1ms + 450ms)}
+
+.sur{font-size:26px;font-weight:700;letter-spacing:.42em;text-transform:uppercase;color:var(--or);white-space:nowrap}
+.pied{position:absolute;left:120px;bottom:44px;font-size:18px;font-weight:600;letter-spacing:.3em;color:rgba(244,240,231,.28);text-transform:uppercase}
+.pied b{color:rgba(211,178,91,.5);font-weight:700}
+.pied em{font-style:normal;text-transform:none;letter-spacing:.3em}
+
+/* sceau (nom non dévoilé) */
+.sceau{display:inline-block;position:relative;background:linear-gradient(100deg,var(--or-clair),var(--or) 45%,var(--brique));overflow:hidden;vertical-align:middle}
+.sceau::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,250,235,.55) 50%,transparent 70%);transform:translateX(-120%);animation:lueur 5.5s var(--ease) infinite}
+@keyframes lueur{0%,55%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+
+/* ---------- acteur : le carré doré ---------- */
+#carre{position:absolute;left:120px;top:48px;width:44px;height:44px;z-index:20;
+  background:linear-gradient(135deg,var(--or-clair) 0%,var(--or) 48%,var(--brique) 100%);
+  transition:left 1.25s var(--ease),top 1.25s var(--ease),width 1.25s var(--ease),height 1.25s var(--ease),opacity .9s var(--ease),box-shadow 1.4s var(--ease)}
+#carre .n7{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;letter-spacing:.02em;color:#1a1408;opacity:0;transition:opacity .5s}
+#carre .g{position:absolute;left:23.9%;top:21.9%;width:52.5%;height:56%;object-fit:contain;opacity:0;transition:opacity .9s var(--ease)}
+#carre.tag .n7{opacity:1}
+#carre.lampe .g{opacity:1}
+#carre.lampe{box-shadow:0 0 120px 20px rgba(255,216,119,.22),0 0 380px 80px rgba(200,135,78,.16)}
+#carre.porte{box-shadow:0 0 160px 30px rgba(255,216,119,.25),0 0 460px 120px rgba(200,135,78,.18)}
+#carre.cache{opacity:0}
+
+/* ---------- 0 · ATTENTE ---------- */
+.rail-genius{position:absolute;left:186px;top:58px;font-size:26px;font-weight:800;letter-spacing:.34em}
+.rail-droite{position:absolute;right:120px;top:60px;font-size:22px;font-weight:600;letter-spacing:.34em;color:var(--gris);text-transform:uppercase}
+.plans{position:absolute;left:120px;top:190px;width:1150px;height:520px}
+.plan{position:absolute;inset:0}
+.on .plan:not(.cur) .r{opacity:0;transform:translateY(-18px);filter:blur(10px);
+   transition:opacity .7s var(--ease),transform .9s var(--ease),filter .7s var(--ease);transition-delay:0s}
+.lockup .l1{font-size:250px;font-weight:900;letter-spacing:-.045em;line-height:.8;margin-left:-12px}
+.lockup .l2{font-size:66px;font-weight:800;line-height:1;margin-top:28px;white-space:nowrap;display:inline-block}
+.p-titre .sur{margin-bottom:56px}
+.p-titre .quand{margin-top:52px;font-size:40px;font-weight:500;color:var(--gris)}
+.p-titre .quand b{color:var(--creme);font-weight:700}
+
+.casting .sur{margin-bottom:46px}
+.ligne-acte{display:flex;align-items:center;height:116px;border-top:1px solid rgba(244,240,231,.14)}
+.ligne-acte:last-of-type{border-bottom:1px solid rgba(244,240,231,.14)}
+.ligne-acte .num{width:150px;font-size:44px;font-weight:300;color:var(--or);letter-spacing:.08em}
+.ligne-acte .nom{font-size:72px;font-weight:800;letter-spacing:-.025em;white-space:nowrap}
+.ligne-acte .sceau{width:520px;height:58px}
+.casting .note{margin-top:40px;font-size:38px;font-style:italic;font-weight:400;color:var(--gris)}
+.casting .note b{font-style:italic;color:var(--creme);font-weight:600}
+
+.p-phrase .sur{margin-bottom:50px}
+.p-phrase .txt{font-size:100px;font-weight:800;line-height:1.02;letter-spacing:-.035em}
+.p-phrase .txt em{font-style:italic;font-weight:300;color:var(--or);letter-spacing:-.02em}
+
+.p-apres .sur{margin-bottom:50px}
+.p-apres .txt{font-size:132px;font-weight:900;line-height:.92;letter-spacing:-.045em}
+.p-apres .ou{margin-top:56px;font-size:54px;font-weight:700;color:var(--or)}
+.p-apres .ou span{color:var(--gris);font-weight:500;font-size:40px;margin-left:18px}
+
+.qr{position:absolute;left:1392px;top:176px;width:408px;background:var(--creme);color:var(--noir);padding:50px 50px 34px}
+.qr img{display:block;width:308px;height:308px}
+.qr .lbl{margin-top:30px;font-size:19px;font-weight:800;letter-spacing:.3em;text-transform:uppercase}
+.qr .url{margin-top:10px;font-size:29px;font-weight:600;letter-spacing:-.01em}
+.qr::before{content:"";position:absolute;left:-14px;top:-14px;width:28px;height:28px;background:var(--or)}
+
+.horloge{position:absolute;left:120px;top:742px;display:flex;align-items:flex-end;gap:40px}
+.horloge .h{font-size:92px;font-weight:300;line-height:.8;letter-spacing:-.03em;font-variant-numeric:tabular-nums;color:var(--creme)}
+.horloge .t1{font-size:21px;font-weight:700;letter-spacing:.36em;color:var(--or);text-transform:uppercase;margin-bottom:12px}
+.horloge .t2{font-size:40px;font-weight:600;line-height:1}
+.ticks{position:absolute;left:1392px;top:742px;display:flex;gap:14px}
+.ticks i{width:16px;height:16px;border:2px solid rgba(211,178,91,.6);transition:background .6s}
+.ticks i.on{background:var(--or);border-color:var(--or)}
+
+/* ---------- 1 · LUMIÈRE ---------- */
+.lum-nom{position:absolute;left:0;right:0;top:690px;text-align:center;font-size:30px;font-weight:800;letter-spacing:.6em;padding-left:.6em}
+.halo{position:absolute;left:960px;top:420px;width:1400px;height:1400px;margin:-700px 0 0 -700px;border-radius:50%;
+  background:radial-gradient(circle, rgba(255,216,119,.16), rgba(200,135,78,.06) 35%, transparent 62%);opacity:0;transform:scale(.6);transition:opacity 2.4s var(--ease) .6s,transform 3s var(--ease) .6s}
+.on .halo{opacity:1;transform:scale(1)}
+body.s-lumiere #carre{animation:allumage 2.2s linear .5s both}
+@keyframes allumage{0%{opacity:.0}8%{opacity:.55}11%{opacity:.1}19%{opacity:.75}23%{opacity:.3}34%{opacity:1}100%{opacity:1}}
+
+/* ---------- 2 · TITRE ---------- */
+.titre{position:absolute;left:0;right:0;top:118px;text-align:center}
+.titre .sur{margin-bottom:58px;padding-left:.42em}
+.titre .l1{font-size:330px;font-weight:900;letter-spacing:-.05em;line-height:.78}
+.titre .l2{font-size:84px;font-weight:800;line-height:1;margin-top:40px;white-space:nowrap;display:inline-block}
+.titre .actes{margin-top:96px;font-size:66px;font-style:italic;font-weight:300;color:var(--or);letter-spacing:-.01em}
+.titre .quand{margin-top:30px;font-size:30px;font-weight:600;letter-spacing:.3em;color:var(--gris);text-transform:uppercase;padding-left:.3em}
+
+/* ---------- ACTES ---------- */
+.chiffre{position:absolute;left:84px;top:-40px;font-size:1010px;font-weight:100;line-height:1;letter-spacing:-.02em;color:var(--or);
+  background:linear-gradient(180deg,var(--or-clair) 0%,var(--or) 45%,rgba(200,135,78,.25) 88%,rgba(200,135,78,0) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.acte .bloc{position:absolute;top:200px;right:120px}
+.acte .sur{margin-bottom:46px;display:flex;align-items:center;gap:28px}
+.acte .sur .marque{width:30px;height:30px}
+.acte .nom{font-size:168px;font-weight:900;line-height:.86;letter-spacing:-.045em;text-transform:uppercase;white-space:nowrap}
+.acte .nom .sceau{width:880px;height:290px;display:block}
+.acte .ligne{margin-top:52px;font-size:44px;font-weight:500;color:var(--gris);white-space:nowrap}
+.acte .entree{margin-top:52px;font-size:44px;font-style:italic;font-weight:300;color:var(--or)}
+.progres{position:absolute;right:120px;top:60px;display:flex;gap:16px}
+.progres i{width:22px;height:22px;border:2px solid rgba(211,178,91,.55)}
+.progres i.fait{background:rgba(211,178,91,.55);border-color:transparent}
+.progres i.ici{background:var(--or);border-color:var(--or)}
+
+/* ---------- FONDS GUESTS ---------- */
+.fond-guest img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none}
+.fond-guest.a-image img{display:block}
+.fond-guest.a-image .neutre{display:none}
+.neutre .marque{position:absolute;left:120px;top:64px;display:flex;align-items:center;gap:22px;font-size:22px;font-weight:700;letter-spacing:.36em;text-transform:uppercase;color:rgba(244,240,231,.4)}
+.neutre .marque i{width:18px;height:18px;background:var(--or);opacity:.8}
+.neutre .ombre-chiffre{position:absolute;right:60px;top:-80px;font-size:1100px;font-weight:100;line-height:1;color:rgba(211,178,91,.06)}
+
+/* ---------- MERCI ---------- */
+.merci{color:var(--noir)}
+.merci .bloc{position:absolute;left:120px;top:176px}
+.merci .sur{color:var(--or-sombre);margin-bottom:40px}
+.merci .m{font-size:330px;font-weight:900;letter-spacing:-.06em;line-height:.8;margin-left:-14px}
+.merci .qui{margin-top:60px;font-size:96px;font-weight:800;letter-spacing:-.035em;line-height:1;white-space:nowrap}
+.merci .pied{color:rgba(11,11,11,.35)}
+.merci .pied b{color:var(--or-sombre)}
+
+/* ---------- CLÔTURE ---------- */
+.cloture .bloc{position:absolute;left:120px;top:150px}
+.cloture .sur{margin-bottom:44px}
+.cloture .t{font-size:132px;font-weight:900;letter-spacing:-.045em;line-height:.92}
+.cloture .t em{font-style:italic;font-weight:300;color:var(--or);letter-spacing:-.03em}
+.trio{position:absolute;left:120px;right:120px;top:560px;display:grid;grid-template-columns:repeat(3,1fr);gap:40px}
+.trio .c{border-top:2px solid rgba(211,178,91,.6);padding-top:30px}
+.trio .k{font-size:22px;font-weight:700;letter-spacing:.4em;color:var(--or);margin-bottom:20px;display:flex;align-items:center;gap:16px}
+.trio .k i{width:18px;height:18px;background:var(--or)}
+.trio .n{font-size:58px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.trio .sceau{width:360px;height:52px}
+
+/* ---------- GÉNÉRIQUE ---------- */
+.roll{position:absolute;left:0;right:0;top:0;will-change:transform}
+.cr{display:grid;grid-template-columns:1fr 1fr;column-gap:56px;align-items:baseline;margin:0 0 30px}
+.cr .role{text-align:right;font-size:26px;font-weight:700;letter-spacing:.38em;color:var(--or);text-transform:uppercase}
+.cr .qui{font-size:58px;font-weight:800;letter-spacing:-.025em;line-height:1.05}
+.cr .qui .sceau{width:300px;height:44px}
+.cr-centre{text-align:center}
+.cr-gap{height:120px}
+.cr-titre{font-size:150px;font-weight:900;letter-spacing:-.05em;line-height:.85;text-align:center}
+.logos{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;padding:0 160px}
+.logo-slot{width:340px;height:170px;border:2px dashed rgba(244,240,231,.32);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;color:rgba(244,240,231,.5);font-size:18px;font-weight:700;letter-spacing:.32em;text-transform:uppercase}
+.logo-slot.plein{border:0;background:var(--creme);padding:24px}
+.logo-slot.plein img{max-width:100%;max-height:100%;object-fit:contain}
+.logo-slot small{font-size:15px;letter-spacing:.2em;font-weight:500;opacity:.7}
+.et-vous{font-size:170px;font-weight:900;letter-spacing:-.055em;line-height:.9;text-align:center}
+.et-vous em{display:block;font-size:66px;font-style:italic;font-weight:300;color:var(--or);letter-spacing:-.01em;margin-top:34px}
+
+/* ---------- APÉRO ---------- */
+.apero .bloc{position:absolute;left:120px;top:170px;width:1120px}
+.apero .sur{margin-bottom:48px}
+.apero .t{font-size:132px;font-weight:900;letter-spacing:-.05em;line-height:.9;white-space:nowrap}
+.apero .ou{margin-top:64px;font-size:110px;font-weight:800;letter-spacing:-.04em;color:var(--or);white-space:nowrap;line-height:1}
+.apero .ou .fl{font-weight:300;margin-right:.18em}
+.apero .prec{margin-top:26px;font-size:42px;font-weight:500;color:var(--gris)}
+.faisceau{position:absolute;left:1180px;top:810px;width:640px;height:270px;pointer-events:none;
+  background:linear-gradient(to bottom, rgba(255,216,119,.30), rgba(200,135,78,.06) 70%, transparent);
+  clip-path:polygon(9.4% 0, 90.6% 0, 100% 100%, 0 100%);opacity:0;transition:opacity 2s var(--ease) 1.2s;filter:blur(6px)}
+.on .faisceau{opacity:1}
+body.s-apero #carre{animation:respire 6s ease-in-out 2s infinite}
+@keyframes respire{0%,100%{filter:brightness(1)}50%{filter:brightness(1.12)}}
+
+/* ---------- régie / noir ---------- */
+#noir{position:absolute;inset:0;background:#000;z-index:90;opacity:0;pointer-events:none;transition:opacity .8s}
+body.noir #noir{opacity:1}
+#regie{position:absolute;left:24px;top:24px;z-index:95;background:rgba(0,0,0,.82);color:#fff;font:600 22px/1.45 'Inter',sans-serif;padding:18px 24px;display:none;max-width:900px;border-left:6px solid var(--or)}
+body.regie #regie{display:block}
+#regie b{color:var(--or)}
+
+/* mode capture : tout à l'état final */
+body.fige *,body.fige *::before,body.fige *::after{transition-duration:0s!important;transition-delay:0s!important;animation-duration:0s!important;animation-delay:0s!important}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="fond"></div>
+  <div id="spot"></div>
+  <div id="rampe"></div>
+
+  <!-- 0 · ATTENTE -->
+  <section class="scene attente" data-id="attente" data-fond="sombre" data-nom="Attente (boucle)">
+    <div class="rail-genius r" style="--d:0">GENIUS</div>
+    <div class="rail-droite r" style="--d:100"><span data-k="ecole"></span> · <span data-k="ville"></span></div>
+    <div class="plans">
+      <div class="plan p-titre">
+        <div class="sur r" style="--d:0">Genius N7 présente</div>
+        <div class="lockup">
+          <div class="l1 r" style="--d:120">SOIRÉE</div>
+          <div class="l2 r just" style="--d:260">ENTREPRENEURIAT</div>
+        </div>
+        <div class="quand r" style="--d:420"><b data-k="date"></b> · <span data-k="salle"></span></div>
+      </div>
+      <div class="plan casting">
+        <div class="sur r" style="--d:0">Ce soir · trois actes</div>
+        <div class="lignes"></div>
+        <div class="note r" style="--d:700"></div>
+      </div>
+      <div class="plan p-phrase">
+        <div class="sur r" style="--d:0">Trois parcours · une même obsession</div>
+        <div class="txt r" style="--d:150">Transformer une idée en quelque chose qui existe <em>vraiment.</em></div>
+      </div>
+      <div class="plan p-apres">
+        <div class="sur r" style="--d:0">Après le troisième acte</div>
+        <div class="txt r" style="--d:150">La conversation<br>continue.</div>
+        <div class="ou r" style="--d:350">→ <span class="k-apero" style="margin:0;font-size:inherit;color:inherit;font-weight:inherit"></span><span class="k-apero-sous"></span></div>
+      </div>
+    </div>
+    <div class="qr r" style="--d:300">
+      <img src="assets/qr-luma.svg" alt="QR code vers la page Luma de la soirée">
+      <div class="lbl">La soirée sur Luma</div>
+      <div class="url" data-k="lumaTexte"></div>
+    </div>
+    <div class="horloge r" style="--d:500">
+      <div class="h" id="h-heure">18:30</div>
+      <div><div class="t1" id="h-t1">Lever de rideau</div><div class="t2" id="h-t2">dans 15 min</div></div>
+    </div>
+    <div class="ticks r" style="--d:600"><i></i><i></i><i></i><i></i></div>
+  </section>
+
+  <!-- 1 · LUMIÈRE -->
+  <section class="scene" data-id="lumiere" data-fond="nuit" data-nom="Ouverture · la lumière">
+    <div class="halo"></div>
+    <div class="lum-nom r" style="--d:1700">GENIUS N7</div>
+  </section>
+
+  <!-- 2 · TITRE -->
+  <section class="scene" data-id="titre" data-fond="sombre" data-nom="Ouverture · titre (discours Genius N7)">
+    <div class="titre">
+      <div class="sur r" style="--d:0">Genius N7 · avec AIn7</div>
+      <div class="l1 r" style="--d:150">SOIRÉE</div>
+      <div><div class="l2 r just" style="--d:320">ENTREPRENEURIAT</div></div>
+      <div class="actes r" style="--d:900">en trois actes</div>
+      <div class="quand r" style="--d:1100"><span data-k="date"></span> · <span data-k="salle"></span></div>
+    </div>
+  </section>
+
+  <!-- actes, fonds, mercis : générés -->
+  <div id="actes"></div>
+
+  <!-- CLÔTURE -->
+  <section class="scene cloture" data-id="cloture" data-fond="sombre" data-nom="Clôture">
+    <div class="bloc">
+      <div class="sur r" style="--d:0">Fin du troisième acte</div>
+      <div class="t r" style="--d:150">Trois histoires<br><em>qui se répondent.</em></div>
+    </div>
+    <div class="trio"></div>
+    <div class="pied r" style="--d:900">Genius N7 · <b>AIn7</b> · <em data-k="dateCourte"></em></div>
+  </section>
+
+  <!-- GÉNÉRIQUE -->
+  <section class="scene generique" data-id="generique" data-fond="sombre" data-nom="Générique · remerciements">
+    <div class="roll"></div>
+  </section>
+
+  <!-- APÉRO -->
+  <section class="scene apero" data-id="apero" data-fond="sombre" data-nom="Envoi vers l'apéro">
+    <div class="bloc">
+      <div class="sur r" style="--d:0">Le rideau tombe</div>
+      <div class="t r" style="--d:150">La conversation<br>continue.</div>
+      <div class="ou r" style="--d:450"><span class="fl">→</span><span class="k-apero"></span></div>
+      <div class="prec r" style="--d:650"></div>
+    </div>
+    <div class="faisceau"></div>
+    <div class="pied r" style="--d:900">Genius N7 · <b>AIn7</b> · <em data-k="dateCourte"></em></div>
+  </section>
+
+  <div id="carre"><span class="n7">N7</span><img class="g" src="assets/g-ampoule.png" alt=""></div>
+  <div id="vignette"></div>
+  <div id="grain"></div>
+  <div id="noir"></div>
+  <div id="regie"></div>
+</div>
+
+<script>
+(function(){
+const D = window.SOIREE;
+const $ = (s,el=document)=>el.querySelector(s);
+const $$ = (s,el=document)=>[...el.querySelectorAll(s)];
+const stage = $('#stage'), carre = $('#carre');
+const P = new URLSearchParams(location.search);
+const ROMAIN = ['I','II','III'];
+const ORDINAL = ['premier','deuxième','troisième'];
+const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const aNom = g => g && g.nom && g.nom.trim().length>0;
+
+/* ---------- mise à l'échelle 1920×1080 ---------- */
+function echelle(){
+  if(P.has('cadre')){ stage.style.transform='none'; document.documentElement.style.height=document.body.style.height='1080px'; return; }
+  const s = Math.min(innerWidth/1920, innerHeight/1080);
+  stage.style.transform = `translate(${(innerWidth-1920*s)/2}px,${(innerHeight-1080*s)/2}px) scale(${s})`;
+}
+addEventListener('resize', echelle); echelle();
+
+/* ---------- données simples ---------- */
+function remplir(){
+  $$('[data-k]').forEach(el=>{ el.textContent = D[el.dataset.k] ?? ''; });
+  const L = D.lieuxApero[D.apero] || D.lieuxApero.melee;
+  $$('.k-apero').forEach(el=> el.textContent = L.nom);
+  $$('.k-apero-sous').forEach(el=> el.textContent = L.precision ? ' ' + L.precision : '');
+  $$('.apero .prec').forEach(el=> el.textContent = [L.precision, D.aperoSousTitre].filter(Boolean).join(' · '));
+}
+
+/* ---------- construction des actes ---------- */
+const actes = $('#actes');
+D.guests.slice(0,3).forEach((g,k)=>{
+  const R = ROMAIN[k], connu = aNom(g);
+  const prog = [0,1,2].map(j=>`<i class="${j<k?'fait':j===k?'ici':''}"></i>`).join('');
+  const nomHTML = connu ? esc(g.nom).replace(' ', '<br>') : '<span class="sceau"></span>';
+  actes.insertAdjacentHTML('beforeend', `
+  <section class="scene acte" data-id="acte" data-g="${k}" data-fond="sombre" data-nom="Acte ${R} · entrée en scène">
+    <div class="chiffre r" style="--d:0">${R}</div>
+    <div class="progres r" style="--d:200">${prog}</div>
+    <div class="bloc">
+      <div class="sur r" style="--d:100"><span class="marque"></span>Acte ${R}</div>
+      <div class="nom ${connu?'':'scelle'}">${nomHTML}</div>
+      ${connu && g.ligne ? `<div class="ligne r" style="--d:2300">${esc(g.ligne)}</div>` : (connu ? '' : `<div class="entree r" style="--d:900">Entrée en scène.</div>`)}
+    </div>
+    <div class="pied r" style="--d:900">Genius N7 · <b>AIn7</b> · <em>${esc(D.dateCourte)}</em></div>
+  </section>
+  <section class="scene fond-guest" data-id="fond" data-g="${k}" data-fond="sombre" data-nom="Acte ${R} · fond du guest (${esc(g.fond)})">
+    <div class="neutre">
+      <div class="ombre-chiffre">${R}</div>
+      <div class="marque"><i></i>Acte ${R}${connu?' · '+esc(g.nom):''}</div>
+    </div>
+    <img alt="">
+  </section>
+  <section class="scene merci" data-id="merci" data-g="${k}" data-fond="creme" data-nom="Acte ${R} · merci">
+    <div class="bloc">
+      <div class="sur r" style="--d:0">Fin de l'acte ${R}</div>
+      <div class="m r" style="--d:120">Merci${connu?',':'.'}</div>
+      ${connu?`<div class="qui r" style="--d:320">${esc(g.nom)}</div>`:''}
+    </div>
+    <div class="pied r" style="--d:600">Genius N7 · <b>AIn7</b> · <em>${esc(D.dateCourte)}</em></div>
+  </section>`);
+  // chargement de l'image de fond (extensions essayées dans l'ordre)
+  const sec = actes.querySelector(`.fond-guest[data-g="${k}"]`), img = sec.querySelector('img');
+  const base = g.fond || '', exts = /\.(jpe?g|png|webp)$/i.test(base) ? [''] : ['.jpg','.jpeg','.png','.webp'];
+  let e = 0;
+  img.onload = ()=> sec.classList.add('a-image');
+  img.onerror = ()=> { e++; if(e<exts.length) img.src = base+exts[e]; };
+  if(base) img.src = base+exts[0];
+});
+
+/* ---------- attente : casting ---------- */
+function casting(){
+  const lignes = $('.casting .lignes'); lignes.innerHTML='';
+  let scelles = 0;
+  D.guests.slice(0,3).forEach((g,k)=>{
+    const montrer = aNom(g) && (k===0 || D.devoilerPendantAttente);
+    if(!montrer) scelles++;
+    lignes.insertAdjacentHTML('beforeend', `<div class="ligne-acte r" style="--d:${180+k*140}"><div class="num">${ROMAIN[k]}</div>${montrer?`<div class="nom">${esc(g.nom)}</div>`:'<span class="sceau"></span>'}</div>`);
+  });
+  const mots = ['', 'Un nom', 'Deux noms', 'Trois noms'];
+  $('.casting .note').innerHTML = scelles
+    ? `${mots[scelles]} sous scellé. <b>${scelles>1?'Ils s’ouvrent':'Il s’ouvre'} sur scène.</b>`
+    : `Trois histoires <b>qui se répondent.</b>`;
+}
+
+/* ---------- clôture ---------- */
+function trio(){
+  $('.trio').innerHTML = D.guests.slice(0,3).map((g,k)=>`
+   <div class="c r" style="--d:${450+k*160}"><div class="k"><i></i>ACTE ${ROMAIN[k]}</div>
+   ${aNom(g)?`<div class="n">${esc(g.nom).replace(' ','<br>')}</div>`:'<span class="sceau"></span>'}</div>`).join('');
+}
+
+/* ---------- générique ---------- */
+function generique(){
+  const roll = $('.roll');
+  const cr = (role, qui) => `<div class="cr"><div class="role">${esc(role)}</div><div class="qui">${qui}</div></div>`;
+  let h = `<div class="cr-centre"><div class="sur" style="padding-left:.42em;margin-bottom:40px">Genius N7 présente</div></div>
+           <div class="cr-titre">SOIRÉE<br><span style="font-size:.45em;letter-spacing:-.02em">ENTREPRENEURIAT</span></div>
+           <div class="cr-gap"></div>`;
+  D.guests.slice(0,3).forEach((g,k)=>{ h += cr('Acte '+ROMAIN[k], aNom(g)?esc(g.nom):'<span class="sceau"></span>'); });
+  h += `<div class="cr-gap"></div>`;
+  D.equipe.forEach(([r,q])=> h += cr(r, esc(q)));
+  h += `<div class="cr-gap"></div><div class="cr-centre"><div class="sur" style="padding-left:.42em;margin-bottom:48px">Avec le soutien de</div></div><div class="logos">`;
+  D.partenaires.forEach((p,j)=>{
+    h += p.logo ? `<div class="logo-slot plein"><img src="${esc(p.logo)}" alt="${esc(p.nom||'')}"></div>`
+                : `<div class="logo-slot">Logo partenaire<small>emplacement ${String(j+1).padStart(2,'0')}</small></div>`;
+  });
+  h += `</div><div class="cr-gap" style="height:220px"></div>
+        <div class="et-vous fin">Et vous,<br>ce soir.<em>Merci d'être venus.</em></div>`;
+  roll.innerHTML = h;
+}
+let rollAnim = null;
+function lancerRoll(){
+  const roll = $('.roll'), fin = $('.et-vous', roll);
+  if(rollAnim) rollAnim.cancel();
+  // le bloc final s'arrête centré dans la zone visible (au-dessus des fauteuils)
+  const yFin = fin.offsetTop + fin.offsetHeight/2;
+  const arret = 400 - yFin;
+  const depart = 1080;
+  const duree = Math.max(20, (depart - arret) / 62) * 1000;
+  if(document.body.classList.contains('fige')){ roll.style.transform=`translateY(${arret}px)`; return; }
+  rollAnim = roll.animate([{transform:`translateY(${depart}px)`},{transform:`translateY(${arret}px)`}],
+    {duration:duree, delay:900, easing:'cubic-bezier(.3,0,.25,1)', fill:'both'});
+}
+
+/* ---------- ajustements typographiques ---------- */
+function justifier(el, largeur){
+  el.style.letterSpacing='0px';
+  const n = el.textContent.length, w = el.getBoundingClientRect().width / scaleCourant();
+  const ls = (largeur - w)/(n-1);
+  el.style.letterSpacing = ls+'px'; el.style.marginRight = (-ls)+'px';
+}
+function scaleCourant(){ return stage.getBoundingClientRect().width/1920 || 1; }
+function ajuster(el, max){
+  let fs = parseFloat(getComputedStyle(el).fontSize);
+  while(el.scrollWidth > max && fs > 20){ fs -= 2; el.style.fontSize = fs+'px'; }
+}
+function mise_en_page(){
+  // lockups « SOIRÉE / ENTREPRENEURIAT »
+  $$('.just').forEach(el=>{
+    const l1 = el.closest('.lockup, .titre').querySelector('.l1');
+    // largeur réelle du mot (et non celle du bloc qui le contient)
+    const rg = document.createRange(); rg.selectNodeContents(l1);
+    justifier(el, rg.getBoundingClientRect().width / scaleCourant() * 0.985);
+  });
+  // noms des actes : tiennent à droite du chiffre
+  $$('.acte').forEach(sec=>{
+    const ch = $('.chiffre', sec), bloc = $('.bloc', sec);
+    const gauche = ch.offsetLeft + ch.offsetWidth + 90;
+    const max = 1920 - 120 - Math.max(gauche, 760);
+    $$('.nom', bloc).forEach(n=> ajuster(n, max));
+    $$('.ligne', bloc).forEach(n=> ajuster(n, max));
+  });
+  $$('.merci .qui').forEach(n=> ajuster(n, 1680));
+  $$('.apero .ou').forEach(n=> ajuster(n, 1120)); // = largeur du bloc
+  $$('.ligne-acte .nom').forEach(n=> ajuster(n, 960));
+}
+
+/* ---------- l'acteur : le carré doré ---------- */
+let minuteurs = [];
+function carreA(g, dur){
+  carre.style.transitionDuration = dur!=null ? dur+'ms' : '';
+  ['left','top','width','height'].forEach(p=>{ if(g[p[0]==='l'?'x':p[0]==='t'?'y':p[0]] != null) {} });
+  if(g.x!=null) carre.style.left = g.x+'px';
+  if(g.y!=null) carre.style.top = g.y+'px';
+  if(g.w!=null) carre.style.width = g.w+'px';
+  if(g.h!=null) carre.style.height = g.h+'px';
+  carre.className = g.mode || '';
+}
+function boite(el){ // position dans la scène (non transformée)
+  let x=0,y=0,n=el; while(n && n!==stage){ x+=n.offsetLeft; y+=n.offsetTop; n=n.offsetParent; }
+  return {x,y,w:el.offsetWidth,h:el.offsetHeight};
+}
+function plan(t, f){ minuteurs.push(setTimeout(f, document.body.classList.contains('fige')?0:t)); }
+
+function acteur(sec){
+  minuteurs.forEach(clearTimeout); minuteurs=[];
+  const id = sec.dataset.id;
+  if(id==='attente') return carreA({x:120,y:48,w:44,h:44,mode:'tag'});
+  if(id==='lumiere') return carreA({x:770,y:230,w:380,h:380,mode:'lampe'}, 1600);
+  if(id==='titre'){
+    const l1 = $('.titre .l1'), b = boite(l1);
+    return carreA({x:960-90,y:b.y + b.h + 168 + 0,w:180,h:8,mode:''});
+  }
+  if(id==='acte'){
+    const nom = $('.nom', sec), b = boite(nom), m = $('.sur .marque', sec), bm = boite(m);
+    const scelle = nom.classList.contains('scelle');
+    if(scelle){ // le sceau reste : le carré devient la marque
+      return carreA({x:bm.x,y:bm.y,w:30,h:30,mode:''});
+    }
+    // 1) le carré devient le sceau qui couvre le nom
+    carreA({x:b.x-16,y:b.y-34,w:b.w+32,h:b.h+46,mode:''}); // marge haute : couvre aussi les accents (É)
+    // 2) il se retire vers la droite : le nom apparaît
+    plan(2000, ()=> carreA({x:b.x+b.w+16, w:0}, 900));
+    // 3) il réapparaît, minuscule, en marque devant « ACTE »
+    plan(2950, ()=>{ carreA({x:bm.x+15,y:bm.y+15,w:0,h:0,mode:''},0); });
+    plan(3050, ()=>{ carreA({x:bm.x,y:bm.y,w:30,h:30,mode:''},700); });
+    return;
+  }
+  if(id==='fond') return carreA({mode:'cache'});
+  if(id==='merci') return carreA({x:1240,y:-150,w:760,h:760,mode:'lampe'});
+  if(id==='cloture') return carreA({x:120,y:500,w:160,h:8,mode:''});
+  if(id==='generique') return carreA({x:960-4,y:1200,w:8,h:8,mode:'cache'});
+  if(id==='apero') return carreA({x:1300,y:110,w:400,h:700,mode:'porte'});
+}
+
+/* ---------- attente : rotation des plans + horloge ---------- */
+const plans = $$('.plan'), ticks = $$('.ticks i');
+let planI = 0, planT = null;
+function montrerPlan(n){
+  planI = (n+plans.length)%plans.length;
+  plans.forEach((p,j)=>p.classList.toggle('cur', j===planI));
+  ticks.forEach((t,j)=>t.classList.toggle('on', j===planI));
+}
+function rotation(on){
+  clearInterval(planT);
+  if(on && !P.has('plan')) planT = setInterval(()=>montrerPlan(planI+1), (D.dureePlanAttente||10)*1000);
+}
+function maintenant(){
+  if(P.has('heure')){ const [h,m]=P.get('heure').split(':').map(Number); const d=new Date(); d.setHours(h,m,0,0); return d; }
+  return new Date();
+}
+function horloge(){
+  const n = maintenant(), pad = v=>String(v).padStart(2,'0');
+  $('#h-heure').textContent = pad(n.getHours())+':'+pad(n.getMinutes());
+  const [h,m] = (D.horaires.ouverture||'18:45').split(':').map(Number);
+  const cible = new Date(n); cible.setHours(h,m,0,0);
+  const min = Math.ceil((cible - n)/60000);
+  $('#h-t1').textContent = 'Lever de rideau · ' + D.horaires.ouverture.replace(':','h');
+  $('#h-t2').textContent = (min>0 && min<=90) ? (min===1 ? 'dans 1 minute' : `dans ${min} minutes`)
+                          : (min<=0 && min>-90) ? 'dans un instant' : 'Installez-vous.';
+}
+setInterval(horloge, 5000);
+
+/* ---------- navigation ---------- */
+let scenes = [], i = -1;
+function aller(n, force){
+  n = Math.max(0, Math.min(scenes.length-1, n));
+  if(n===i && !force) return;
+  if(i>=0) scenes[i].classList.remove('on');
+  i = n;
+  const sec = scenes[i], id = sec.dataset.id;
+  sec.classList.add('on');
+  const fond = sec.dataset.fond;
+  $('#fond').className = fond==='creme'?'creme':fond==='nuit'?'nuit':'';
+  document.body.classList.toggle('creme', fond==='creme');
+  $('#spot').style.opacity = (fond==='sombre' && id!=='fond') ? 1 : (id==='lumiere'? .0 : 0);
+  $('#rampe').style.opacity = fond==='creme' ? 0 : (id==='fond' ? .5 : 1);
+  $('#vignette').style.opacity = fond==='creme' ? 0 : 1;
+  document.body.className = document.body.className.replace(/\bs-\S+/g,'').trim();
+  document.body.classList.add('s-'+id);
+  rotation(id==='attente');
+  if(id==='attente'){ montrerPlan(P.has('plan')?+P.get('plan'):0); }
+  if(id==='generique') lancerRoll(); else if(rollAnim){ rollAnim.cancel(); rollAnim=null; }
+  acteur(sec);
+  try{ history.replaceState(null,'','#'+i); }catch(e){}
+  regie();
+}
+function regie(){
+  const s = scenes[i], nx = scenes[i+1];
+  const L = D.lieuxApero[D.apero];
+  $('#regie').innerHTML = `<b>${i+1}/${scenes.length}</b> — ${s.dataset.nom}<br>
+    suivant : ${nx?nx.dataset.nom:'(fin)'}<br>
+    apéro : <b>${L?L.nom:'?'}</b> (L pour basculer) · B noir · F plein écran · R régie`;
+}
+addEventListener('keydown', e=>{
+  const k = e.key;
+  if(['ArrowRight',' ','PageDown','Enter','ArrowDown'].includes(k)){ e.preventDefault(); aller(i+1); }
+  else if(['ArrowLeft','PageUp','Backspace','ArrowUp'].includes(k)){ e.preventDefault(); aller(i-1); }
+  else if(k==='Home') aller(0);
+  else if(k==='End') aller(scenes.length-1);
+  else if(k==='b'||k==='B'||k==='.') document.body.classList.toggle('noir');
+  else if(k==='r'||k==='R') document.body.classList.toggle('regie');
+  else if(k==='f'||k==='F'){ if(!document.fullscreenElement) document.documentElement.requestFullscreen().catch(()=>{}); else document.exitFullscreen(); }
+  else if(k==='l'||k==='L'){ D.apero = D.apero==='melee'?'foyer':'melee'; remplir(); mise_en_page(); regie(); }
+});
+let souris; addEventListener('mousemove', ()=>{ document.body.classList.add('souris'); clearTimeout(souris); souris=setTimeout(()=>document.body.classList.remove('souris'),1800); });
+
+/* ---------- démarrage ---------- */
+if(P.has('fige')) document.body.classList.add('fige');
+remplir(); casting(); trio(); generique();
+scenes = $$('.scene', stage);
+// ordre du document : attente, lumière, titre, [acte, fond, merci]×3, clôture, générique, apéro
+horloge();
+document.fonts.ready.then(()=>{
+  mise_en_page();
+  const depart = P.has('scene') ? +P.get('scene') : (location.hash ? +location.hash.slice(1) : 0);
+  aller(isNaN(depart)?0:depart, true);
+});
+})();
+</script>
+</body>
+</html>

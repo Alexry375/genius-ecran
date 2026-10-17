@@ -1,0 +1,3 @@
+Déposer ici les fonds plein écran des guests (1920x1080) :
+guest-1.jpg, guest-2.jpg, guest-3.jpg
+(noms modifiables dans SOIREE.guests[].fond en tête de index.html)
