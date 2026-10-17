@@ -13,10 +13,10 @@
 </head>
 <body>
 <img id="d" src="slide-01.jpg" alt="Diapositive 1">
-<div id="n">1 / 16 · → ←</div>
+<div id="n">1 / 5 · → ←</div>
 <script>
 (function () {
-  var N = 16, i = 1, img = document.getElementById('d'), n = document.getElementById('n');
+  var N = 5, i = 1, img = document.getElementById('d'), n = document.getElementById('n');
   for (var k = 2; k <= N; k++) { var p = new Image(); p.src = 'slide-' + String(k).padStart(2, '0') + '.jpg'; }
   function va(j) {
     i = Math.max(1, Math.min(N, j));

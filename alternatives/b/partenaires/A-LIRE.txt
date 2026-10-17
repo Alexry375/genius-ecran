@@ -1,4 +1,0 @@
-Logos des partenaires (déclarés dans SOIREE.partenaires, en tête de index.html).
-Logos officiels posés sur une carte crème. Sources et droits :
-ressources/visuels/collecte/SOURCES.md
-N7 Développement : soutien à confirmer.

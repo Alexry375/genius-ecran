@@ -1,6 +1,0 @@
-Déposer ici les logos des partenaires (PNG ou SVG, fond transparent),
-puis renseigner SOIREE.partenaires en tête de index.html.
-
-Présents (17/10/2026) : logos officiels détourés d'AIn7, Toulouse INP · ENSEEIHT,
-N7 Développement (soutien à confirmer) et La Mêlée.
-Sources et droits : ressources/visuels/collecte/SOURCES.md

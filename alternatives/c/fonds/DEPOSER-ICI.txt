@@ -1,8 +1,0 @@
-Déposer ici les fonds plein écran des guests (1920x1080) :
-guest-1.jpg, guest-2.jpg, guest-3.jpg
-(noms modifiables dans SOIREE.guests[].fond en tête de index.html)
-
-PROPOSITION (17/10/2026) : les trois fichiers présents sont des fonds sobres
-fabriqués à partir de la charte (noir, or, G en filigrane, nom et ligne du guest,
-logo Picsellia pour l'acte II). Aucune photo. À valider ; pour les changer,
-remplacer le fichier par l'image de Tristan ou du guest, sous le même nom.
