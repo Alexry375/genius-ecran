@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Accueil Genius N7</title>
+<style>
+  :root {
+    --fond: #0b0c14; --carte: #151722; --trait: #2a2c3a; --texte: #ece6d8; --doux: #a59f90; --or: #e2b45a;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--fond); color: var(--texte);
+    font: 16px/1.5 "Segoe UI", system-ui, -apple-system, sans-serif;
+    padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 28px 48px;
+  }
+  main { max-width: 1120px; margin: 0 auto; display: grid; gap: 36px; }
+  header, section > .intro { display: grid; gap: 8px; max-width: 68ch; }
+  h1 { margin: 0; font-size: clamp(1.6rem, 4vw, 2.3rem); line-height: 1.15; text-wrap: balance; }
+  h2 { margin: 0; font-size: 1.3rem; }
+  p { margin: 0; color: var(--doux); }
+  section { display: grid; gap: 16px; }
+  .grille { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+  .grille.portrait { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+  figure { margin: 0; background: var(--carte); border: 1px solid var(--trait); border-radius: 8px; overflow: hidden; min-width: 0; }
+  figure a { display: block; }
+  figure img { display: block; width: 100%; max-width: 100%; height: auto; background: #000; }
+  figcaption { padding: 8px 12px 10px; font-size: .9rem; color: var(--doux); }
+  figcaption b { color: var(--texte); font-weight: 600; }
+  .pdf { color: var(--or); text-decoration: none; font-weight: 600; }
+  .pdf:hover { text-decoration: underline; }
+  .avert { border-left: 3px solid var(--or); padding: 10px 14px; background: var(--carte); border-radius: 0 8px 8px 0; max-width: 68ch; }
+  .avert p { color: var(--texte); }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Accueil de la soirée entrepreneuriat</h1>
+    <p>Genius N7 avec AIn7, jeudi 26 novembre 2026, amphi B00, ENSEEIHT. Propositions à imprimer pour l'accueil des invités : panneaux de fléchage, badges et feuille de test. Touche une image pour l'ouvrir en grand.</p>
+  </header>
+
+  <div class="avert"><p>Faits le 15 octobre, avant plusieurs décisions : personne ne les a encore validés, ni Tristan ni le bureau. Aucun horaire n'y figure, ni le lieu du networking, tant que ces points ne sont pas tranchés. Les noms des badges sont fictifs.</p></div>
+
+  <section>
+    <div class="intro">
+      <h2>Panneaux, version fond noir</h2>
+      <p>Format A4 couché, dans la charte de Tristan (noir et or). Pour une boutique d'impression : une imprimante de bureau rend mal les grands aplats noirs. <a class="pdf" href="panneaux_A4_paysage_sombre.pdf">Le PDF (8 pages)</a></p>
+    </div>
+    <div class="grille">
+      <figure><a href="sombre-1.jpg"><img src="sombre-1.jpg" alt="Panneau Amphi B00, flèche vers la droite" loading="lazy"></a><figcaption><b>1.</b> Amphi B00, flèche à droite</figcaption></figure>
+      <figure><a href="sombre-2.jpg"><img src="sombre-2.jpg" alt="Panneau Amphi B00, flèche vers la gauche" loading="lazy"></a><figcaption><b>2.</b> Amphi B00, flèche à gauche</figcaption></figure>
+      <figure><a href="sombre-3.jpg"><img src="sombre-3.jpg" alt="Panneau Amphi B00, tout droit" loading="lazy"></a><figcaption><b>3.</b> Amphi B00, tout droit</figcaption></figure>
+      <figure><a href="sombre-4.jpg"><img src="sombre-4.jpg" alt="Panneau Accueil avec les trois étapes" loading="lazy"></a><figcaption><b>4.</b> Table d'accueil : billet, badge, amphi</figcaption></figure>
+      <figure><a href="sombre-5.jpg"><img src="sombre-5.jpg" alt="Panneau Inscrivez-vous ici avec le code QR Luma" loading="lazy"></a><figcaption><b>5.</b> Inscription sur place (code Luma)</figcaption></figure>
+      <figure><a href="sombre-6.jpg"><img src="sombre-6.jpg" alt="Panneau Networking et buffet, flèche à droite" loading="lazy"></a><figcaption><b>6.</b> Networking et buffet, à droite</figcaption></figure>
+      <figure><a href="sombre-7.jpg"><img src="sombre-7.jpg" alt="Panneau Networking et buffet, flèche à gauche" loading="lazy"></a><figcaption><b>7.</b> Networking et buffet, à gauche</figcaption></figure>
+      <figure><a href="sombre-8.jpg"><img src="sombre-8.jpg" alt="Panneau Networking, suivez-nous" loading="lazy"></a><figcaption><b>8.</b> Départ groupé à pied (si le networking a lieu hors de l'école)</figcaption></figure>
+    </div>
+  </section>
+
+  <section>
+    <div class="intro">
+      <h2>Panneaux, version fond blanc</h2>
+      <p>Les mêmes huit panneaux, sur fond blanc avec seulement l'accent doré, pour une imprimante ordinaire. <a class="pdf" href="panneaux_A4_paysage_blanc.pdf">Le PDF (8 pages)</a></p>
+    </div>
+    <div class="grille">
+      <figure><a href="blanc-1.jpg"><img src="blanc-1.jpg" alt="Panneau Amphi B00 fond blanc, droite" loading="lazy"></a><figcaption><b>1.</b> Amphi B00, à droite</figcaption></figure>
+      <figure><a href="blanc-2.jpg"><img src="blanc-2.jpg" alt="Panneau Amphi B00 fond blanc, gauche" loading="lazy"></a><figcaption><b>2.</b> Amphi B00, à gauche</figcaption></figure>
+      <figure><a href="blanc-3.jpg"><img src="blanc-3.jpg" alt="Panneau Amphi B00 fond blanc, tout droit" loading="lazy"></a><figcaption><b>3.</b> Amphi B00, tout droit</figcaption></figure>
+      <figure><a href="blanc-4.jpg"><img src="blanc-4.jpg" alt="Panneau Accueil fond blanc" loading="lazy"></a><figcaption><b>4.</b> Table d'accueil</figcaption></figure>
+      <figure><a href="blanc-5.jpg"><img src="blanc-5.jpg" alt="Panneau inscription fond blanc" loading="lazy"></a><figcaption><b>5.</b> Inscription sur place</figcaption></figure>
+      <figure><a href="blanc-6.jpg"><img src="blanc-6.jpg" alt="Panneau networking fond blanc, droite" loading="lazy"></a><figcaption><b>6.</b> Networking et buffet, à droite</figcaption></figure>
+      <figure><a href="blanc-7.jpg"><img src="blanc-7.jpg" alt="Panneau networking fond blanc, gauche" loading="lazy"></a><figcaption><b>7.</b> Networking et buffet, à gauche</figcaption></figure>
+      <figure><a href="blanc-8.jpg"><img src="blanc-8.jpg" alt="Panneau suivez-nous fond blanc" loading="lazy"></a><figcaption><b>8.</b> Départ groupé à pied</figcaption></figure>
+    </div>
+  </section>
+
+  <section>
+    <div class="intro">
+      <h2>Badges</h2>
+      <p>Des étiquettes autocollantes de 99,1 × 67,7 mm, huit par feuille A4, à coller sur les vêtements. Une couleur par profil : bleu pour les étudiants, brique pour les entrepreneurs, or pour les guests, gris pour les autres participants, noir pour l'équipe Genius. Les badges nominatifs se fabriquent automatiquement à partir de la liste des inscrits exportée de Luma ; les badges vierges servent aux personnes non inscrites, qui écrivent leur nom au feutre. <a class="pdf" href="planche_badges_A4.pdf">Le PDF (2 pages)</a></p>
+    </div>
+    <div class="grille portrait">
+      <figure><a href="badges-1.jpg"><img src="badges-1.jpg" alt="Planche de badges nominatifs d'exemple" loading="lazy"></a><figcaption><b>Page 1.</b> Badges nominatifs (noms fictifs)</figcaption></figure>
+      <figure><a href="badges-2.jpg"><img src="badges-2.jpg" alt="Planche de badges vierges" loading="lazy"></a><figcaption><b>Page 2.</b> Badges vierges à remplir à la main</figcaption></figure>
+      <figure><a href="test-1.jpg"><img src="test-1.jpg" alt="Feuille de test d'alignement" loading="lazy"></a><figcaption><b>Feuille de test.</b> La page 1 avec le contour des étiquettes : à imprimer d'abord sur papier ordinaire, puis à superposer à une planche d'étiquettes à contre-jour, pour vérifier que l'impression tombe bien dans les cases. <a class="pdf" href="feuille_test_alignement.pdf">PDF</a></figcaption></figure>
+    </div>
+  </section>
+</main>
+</body>
+</html>
